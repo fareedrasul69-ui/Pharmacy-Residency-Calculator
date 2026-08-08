@@ -5,30 +5,30 @@ st.set_page_config(
     page_title="Residency Match & Tracker", page_icon="💊", layout="wide"
 )
 
-# --- MODERN NEUTRAL & MINIMALISTIC CSS ---
+# --- MODERN NEUTRAL & MINIMALISTIC CSS (Inspired by clean stone/teal UI) ---
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     /* Global App Styling */
     .stApp {
-        background-color: #fafaf9;
-        color: #1c1917;
-        font-family: 'Inter', sans-serif;
+        background-color: #f8f9fa;
+        color: #212529;
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
     /* Sidebar Styling */
     [data-testid="stSidebar"] {
-        background-color: #f5f5f4;
-        border-right: 1px solid #e7e5e4;
+        background-color: #ffffff;
+        border-right: 1px solid #e9ecef;
     }
     
     /* Input Fields & Selectboxes */
     .stTextInput input, .stSelectbox select, .stSlider {
         background-color: #ffffff !important;
-        color: #1c1917 !important;
-        border: 1px solid #d6d3d1 !important;
+        color: #212529 !important;
+        border: 1px solid #ced4da !important;
         border-radius: 8px !important;
     }
     
@@ -37,13 +37,13 @@ st.markdown(
         background: #ffffff;
         padding: 16px;
         border-radius: 12px;
-        border: 1px solid #e7e5e4;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     
     /* Buttons */
     .stButton button {
-        background-color: #292524;
+        background-color: #0d9488;
         color: #ffffff;
         border: none;
         border-radius: 8px;
@@ -51,9 +51,9 @@ st.markdown(
         transition: all 0.2s ease;
     }
     .stButton button:hover {
-        background-color: #44403c;
+        background-color: #0f766e;
         color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
     }
     
     /* Tabs Styling */
@@ -62,25 +62,25 @@ st.markdown(
         background-color: transparent;
     }
     .stTabs [data-baseweb="tab"] {
-        background-color: #f5f5f4;
+        background-color: #ffffff;
         border-radius: 8px;
-        color: #78716c;
-        border: 1px solid #e7e5e4;
+        color: #6c757d;
+        border: 1px solid #e9ecef;
         padding: 10px 20px;
         font-weight: 500;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #ffffff !important;
-        color: #1c1917 !important;
-        border: 1px solid #d6d3d1 !important;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        background-color: #0d9488 !important;
+        color: #ffffff !important;
+        border: 1px solid #0d9488 !important;
+        box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
     }
     
     /* Info / Disclaimer Box */
     .stAlert {
-        background-color: #f5f5f4 !important;
-        border: 1px solid #e7e5e4 !important;
-        color: #44403c !important;
+        background-color: #ffffff !important;
+        border: 1px solid #e9ecef !important;
+        color: #495057 !important;
         border-radius: 10px;
     }
     </style>
@@ -125,10 +125,15 @@ st.caption(
 
 # --- PROFESSIONAL DISCLAIMER ---
 st.info(
-    "**System Notice:** This platform functions as an architectural guide for"
-    " residency pathways. Competitiveness analytics are modeled using portal"
-    " telemetry and metrics, and do not constitute absolute admission"
-    " guarantees. Cross-reference with official institutional criteria."
+    "**System Notice & Credits:** This platform was created by **Fareed"
+    " Rasul**. It functions as an architectural guide for residency pathways."
+    " Competitiveness analytics are modeled using portal telemetry and"
+    " metrics, and do not constitute absolute admission guarantees."
+    " Cross-reference with official institutional criteria.\n\n"
+    "**Connect with Fareed:**\n"
+    "- TikTok: [@fareedrasul](https://www.tiktok.com/@fareedrasul)\n"
+    "- Instagram: [@fareed_rasul](https://www.instagram.com/fareed_rasul)\n"
+    "- Email: [fareedrasul69@gmail.com](mailto:fareedrasul69@gmail.com)"
 )
 
 # --- COMPLETE LIST OF US COLLEGES OF PHARMACY ---
@@ -335,6 +340,49 @@ elif score >= 65:
   st.sidebar.info("Status: Competitive Standard")
 else:
   st.sidebar.warning("Status: Developing Profile")
+
+# --- REAL-TIME PROFILE OPTIMIZATION & RECOMMENDATIONS SECTION ---
+st.sidebar.markdown("---")
+st.sidebar.subheader("Live Profile Recommendations")
+
+recommendations = []
+if gpa < 3.5:
+  recommendations.append(
+      "• **GPA Elevation:** Consider highlighting high grades in advanced"
+      " therapeutics or securing strong APPE rotation evaluations to compensate"
+      " for a sub-3.5 GPA."
+  )
+if work_experience in ["None / Minimal", "Community / Retail Experience (> 1 Year)"]:
+  recommendations.append(
+      "• **Clinical Experience:** Transitioning into a hospital intern role or"
+      " securing an acute-care APPE rotation significantly boosts match"
+      " probability."
+  )
+if research == "No":
+  recommendations.append(
+      "• **Research / Presentations:** Submitting a case report or obtaining a"
+      " poster presentation adds a quick +15 points to your profile."
+  )
+if leadership in ["None", "Local Committee / Member"]:
+  recommendations.append(
+      "• **Leadership Growth:** Stepping into an officer role within professional"
+      " organizations (like ASHP/SSHP) strengthens your executive profile."
+  )
+if lor_strength in ["Standard", "Strong"]:
+  recommendations.append(
+      "• **Recommendation Quality:** Cultivate relationships with clinical"
+      " preceptors who can speak directly to your direct-patient care skills for"
+      " an 'Exceptional' LOR."
+  )
+
+if recommendations:
+  for rec in recommendations:
+    st.sidebar.markdown(rec)
+else:
+  st.sidebar.markdown(
+      "Optimal profile configuration achieved. Focus on interview prep and letter"
+      " of intent customization."
+  )
 
 # Sidebar Saved List Quick View
 st.sidebar.markdown("---")
