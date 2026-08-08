@@ -315,6 +315,16 @@ st.sidebar.header("Candidate Profile")
 user_pharm_school = st.sidebar.selectbox("College of Pharmacy", pharmacy_schools)
 gpa = st.sidebar.slider("PharmD GPA", 2.00, 4.00, 3.50, 0.01)
 
+honor_society = st.sidebar.selectbox(
+    "Honor Societies (Rho Chi / Phi Lambda Sigma - PLS)",
+    [
+        "None",
+        "Member of One (Rho Chi OR PLS)",
+        "Member of Both (Rho Chi AND PLS)",
+        "Officer / Leadership Role in Rho Chi or PLS",
+    ],
+)
+
 work_experience = st.sidebar.selectbox(
     "Pharmacy Experience",
     [
@@ -342,9 +352,17 @@ lor_strength = st.sidebar.selectbox(
     ],
 )
 
-# --- SCORING ALGORITHM (100 Max) ---
+# --- SCORING ALGORITHM (105 Max adjusted) ---
 score = 0.0
 score += (gpa / 4.00) * 35
+
+# Honor societies bonus weighting
+if honor_society == "Officer / Leadership Role in Rho Chi or PLS":
+  score += 10
+elif honor_society == "Member of Both (Rho Chi AND PLS)":
+  score += 8
+elif honor_society == "Member of One (Rho Chi OR PLS)":
+  score += 5
 
 if work_experience == "Multiple Clinical / Specialized Internships":
   score += 20
@@ -401,6 +419,10 @@ elif user_pharm_school != "":
 if gpa < 3.5:
   recommendations.append(
       "• **GPA Elevation:** Consider highlighting high grades in advanced therapeutics or securing strong APPE rotation evaluations to compensate for a sub-3.5 GPA."
+  )
+if honor_society == "None" and gpa >= 3.5:
+  recommendations.append(
+      "• **Honor Society Eligibility:** With a strong GPA, check your academic standing for Rho Chi eligibility to add formal academic prestige to your application."
   )
 if work_experience in ["None / Minimal", "Community / Retail Experience (> 1 Year)"]:
   recommendations.append(
@@ -713,6 +735,7 @@ with tab4:
     st.subheader("🏥 Academic Medical Centers (AMCs) / Large Hospitals")
     st.markdown("""
     * **Average GPA:** 3.74 - 3.92
+    * **Honor Societies:** Over 70% of matched applicants hold membership in Rho Chi (pharmaceutical honor society) or Phi Lambda Sigma (PLS leadership society).
     * **Hospital Internship Duration:** 1.5 to 3 Years (Acute Care Focus)
     * **Research / Posters:** 85% had at least 1 published poster or case report.
     * **Leadership Engagement:** Multiple active student organization board positions.
@@ -721,6 +744,7 @@ with tab4:
     st.subheader("🏪 Community Pharmacy & Managed Care Programs")
     st.markdown("""
     * **Average GPA:** 3.42 - 3.70
+    * **Honor Societies:** Highly valued as an indicator of academic discipline and professional commitment.
     * **Work Experience:** Retail or community longitudinal projects (> 1 Year)
     * **Research / Posters:** 40% had formal poster presentations.
     * **Leadership Engagement:** Committee members or local chapter involvement.
@@ -840,7 +864,7 @@ Residency Selection Committee ({loi_code})
 
 Dear Residency Selection Committee,
 
-I am writing to express my enthusiastic application for the PGY-1 Pharmacy Residency program at {selected_loi_prog} ({loi_code}). My dedication to advancing clinical pharmacy practice and my specific passion for {loi_clinical_area} draw me directly to your distinguished institution. Throughout my academic career at {user_pharm_school} and immersive APPE rotations, I have sought out high-acuity environments that challenge me to integrate advanced pharmacotherapy principles into direct patient care.
+I am writing to express my enthusiastic application for the PGY-1 Pharmacy Residency program at {selected_loi_prog} ({loi_code}). My dedication to advancing clinical pharmacy practice and my specific passion for {loi_clinical_area} draw me directly to your distinguished institution. Throughout my academic excellence and active involvement in professional organizations such as Rho Chi and Phi Lambda Sigma, I have continuously sought out high-acuity environments that challenge me to integrate advanced pharmacotherapy principles into direct patient care.
 
 My commitment to clinical excellence crystallized while {loi_personal_hook}. Navigating real-time therapeutic adjustments and collaborating directly with multidisciplinary critical care teams solidified my ambition to complete rigorous residency training. I was specifically drawn to {selected_loi_prog} because of your progressive clinical pharmacy services, dedicated preceptor mentorship, and active involvement in interprofessional patient rounds across {loi_loc}.
 
@@ -853,7 +877,11 @@ Sincerely,
 [Your Name], PharmD Candidate
 {user_pharm_school}
 """
-    st.code(generated_loi_text, language="markdown")
+    st.text_area(
+        "Copy your generated Letter of Intent below:",
+        generated_loi_text,
+        height=300,
+    )
     
     st.markdown("---")
     st.subheader("📋 Step-by-Step Instructions & Prompts for Crafting a Winning LOI")
