@@ -5,26 +5,23 @@ st.set_page_config(
     page_title="Residency Match & Tracker", page_icon="💊", layout="wide"
 )
 
-# --- MODERN NEUTRAL & MINIMALISTIC CSS (Inspired by clean stone/teal UI) ---
+# --- MODERN NEUTRAL & MINIMALISTIC CSS ---
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
-    /* Global App Styling */
     .stApp {
         background-color: #f8f9fa;
         color: #212529;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
-    /* Sidebar Styling */
     [data-testid="stSidebar"] {
         background-color: #ffffff;
         border-right: 1px solid #e9ecef;
     }
     
-    /* Input Fields & Selectboxes */
     .stTextInput input, .stSelectbox select, .stSlider {
         background-color: #ffffff !important;
         color: #212529 !important;
@@ -32,7 +29,6 @@ st.markdown(
         border-radius: 8px !important;
     }
     
-    /* Metric Cards */
     div[data-testid="stMetric"] {
         background: #ffffff;
         padding: 16px;
@@ -41,7 +37,6 @@ st.markdown(
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     
-    /* Buttons */
     .stButton button {
         background-color: #0d9488;
         color: #ffffff;
@@ -56,7 +51,6 @@ st.markdown(
         box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
     }
     
-    /* Tabs Styling */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         background-color: transparent;
@@ -76,7 +70,6 @@ st.markdown(
         box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
     }
     
-    /* Info / Disclaimer Box */
     .stAlert {
         background-color: #ffffff !important;
         border: 1px solid #e9ecef !important;
@@ -109,6 +102,18 @@ def load_data():
       .str.replace("2025", "2027")
       .str.replace("2026", "2027")
   )
+  
+  # Fallback dynamic URL generator for programs missing official links
+  def ensure_valid_url(row):
+    website = row.get("Website", "")
+    if pd.notna(website) and str(website).strip() != "":
+      return str(website).strip()
+    # Fallback to ASHP Residency Directory search query string if URL is blank
+    prog_name = str(row.get("Program Name", "Pharmacy Residency"))
+    query_encoded = prog_name.replace(" ", "+")
+    return f"https://www.ashp.org/professional-development/residency-information/residency-directory?search={query_encoded}"
+
+  df["Resolved_Website"] = df.apply(ensure_valid_url, axis=1)
   return df
 
 
@@ -296,7 +301,6 @@ leadership = st.sidebar.selectbox(
     ["None", "Local Committee / Member", "Local Officer", "Executive / Multi-Officer"],
 )
 
-# Expanded LOR option with definition tooltips/labels
 lor_strength = st.sidebar.selectbox(
     "Recommendation Quality (LOR)",
     [
@@ -453,7 +457,6 @@ with tab1:
 
           st.write(f"**Fit Status:** {fit_status}")
           
-          # Defined Likelihood breakdown & explicit recommendation
           if score >= required_score:
             match_def = "High probability of securing an interview invitation based on robust academic and professional alignment."
             rec_action = "✅ **Recommendation:** Strongly Consider Applying. Your profile meets or exceeds target standards."
@@ -472,11 +475,10 @@ with tab1:
           st.write(f"**Category:** {row.get('Category', 'N/A')}")
           st.write(f"**Stipend:** {row.get('Estimated Stipend', 'N/A')}")
           
-          # MPJE / Universal Exam Info simulation based on state
           state_code = row.get("State_Code", "Unknown")
-          umpje_states = ["IL", "CO", "ID", "ND", "UT", "WA"] # States accepting unified or flexible components
+          umpje_states = ["IL", "CO", "ID", "ND", "UT", "WA"]
           if state_code in umpje_states:
-            exam_policy = f"State MPJE Required (Participates/Aligns with multi-state standard options or UMJPE frameworks where applicable for {state_code})."
+            exam_policy = f"State MPJE Required (Participates/Aligns with multi-state standard options or UMPJE frameworks where applicable for {state_code})."
           else:
             exam_policy = f"Dedicated State MPJE Required for {state_code} licensure."
           st.write(f"**Licensure Policy:** {exam_policy}")
@@ -485,9 +487,10 @@ with tab1:
           st.write(f"**Deadline:** {row.get('Deadline_Display', 'N/A')}")
           st.write(f"**Slots:** {row.get('Number of Positions', 'N/A')}")
 
-        website = row.get("Website", "")
-        if pd.notna(website) and str(website).strip() != "":
-          st.markdown(f"**Official Portal:** [Access Link]({website})")
+        # Always active link via Resolved_Website fallback engine
+        resolved_link = row.get("Resolved_Website", "")
+        if pd.notna(resolved_link) and str(resolved_link).strip() != "":
+          st.markdown(f"**Official Portal / Directory Link:** [Access Link]({resolved_link})")
 
         prog_name_str = row["Program Name"]
         if st.button(f"Save to Portfolio", key=f"save_t1_{idx}"):
@@ -619,14 +622,14 @@ with tab2:
         state_code_2 = prog_row.get("State_Code", selected_state)
         umpje_states = ["IL", "CO", "ID", "ND", "UT", "WA"]
         if state_code_2 in umpje_states:
-          exam_policy_2 = f"State MPJE Required (Compatible with flexible/multi-state frameworks or UMJPE alternatives in {state_code_2})."
+          exam_policy_2 = f"State MPJE Required (Compatible with flexible/multi-state frameworks or UMPJE alternatives in {state_code_2})."
         else:
           exam_policy_2 = f"Dedicated State MPJE Required for {state_code_2} licensure."
         st.write(f"**Licensure Policy:** {exam_policy_2}")
         
-        website = prog_row.get("Website", "")
-        if pd.notna(website) and str(website).strip() != "":
-          st.markdown(f"**Official Link:** [Access]({website})")
+        resolved_link_2 = prog_row.get("Resolved_Website", "")
+        if pd.notna(resolved_link_2) and str(resolved_link_2).strip() != "":
+          st.markdown(f"**Official Link / Directory Access:** [Access Portal]({resolved_link_2})")
 
       if st.button(f"Save to Portfolio", key="save_inspector"):
         if selected_prog_name not in st.session_state.saved_list:
@@ -663,9 +666,9 @@ with tab3:
         if not match_rows.empty:
           r_info = match_rows.iloc[0]
           st.write(f"**Location:** {r_info.get('Location', 'N/A')} | **Category:** {r_info.get('Category', 'N/A')}")
-          web_link = r_info.get("Website", "")
+          web_link = r_info.get("Resolved_Website", "")
           if pd.notna(web_link) and str(web_link).strip() != "":
-            st.markdown(f"**Official Portal:** [Open Official Page]({web_link})")
+            st.markdown(f"**Official Portal / Directory Link:** [Open Page]({web_link})")
           else:
             st.caption("No portal URL available.")
       with col_item2:
