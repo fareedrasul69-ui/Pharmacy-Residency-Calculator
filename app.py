@@ -231,7 +231,7 @@ pharmacy_schools = [
     "University of Kentucky",
     "University of Louisiana Monroe",
     "University of Maryland",
-    "University of Massachusetts",
+    "University ofMassachusetts",
     "University of Michigan",
     "University of Minnesota",
     "University of Mississippi",
@@ -330,6 +330,14 @@ elif lor_strength == "Strong":
 else:
   score += 5
 
+# Institutional Network Context Check (Subtle weight/insight factor)
+is_recognized_anchor_school = (
+    user_pharm_school != "Other / International"
+    and user_pharm_school != ""
+)
+
+score = min(score, 100.0)
+
 st.sidebar.markdown("---")
 st.sidebar.subheader(f"Calculated Score: {score:.1f} / 100")
 st.sidebar.caption(f"Inst: {user_pharm_school}")
@@ -346,33 +354,34 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("Live Profile Recommendations")
 
 recommendations = []
+if user_pharm_school == "Other / International":
+  recommendations.append(
+      "• **Institutional Context:** Coming from an external or international program means leaning heavily on strong regional APPE rotations and establishing direct connections with program preceptors."
+  )
+elif is_recognized_anchor_school:
+  recommendations.append(
+      "• **Network Leverage:** Leverage your institution's alumni network and established regional preceptor ties to gain familiarity and comfort during application reviews."
+  )
+
 if gpa < 3.5:
   recommendations.append(
-      "• **GPA Elevation:** Consider highlighting high grades in advanced"
-      " therapeutics or securing strong APPE rotation evaluations to compensate"
-      " for a sub-3.5 GPA."
+      "• **GPA Elevation:** Consider highlighting high grades in advanced therapeutics or securing strong APPE rotation evaluations to compensate for a sub-3.5 GPA."
   )
 if work_experience in ["None / Minimal", "Community / Retail Experience (> 1 Year)"]:
   recommendations.append(
-      "• **Clinical Experience:** Transitioning into a hospital intern role or"
-      " securing an acute-care APPE rotation significantly boosts match"
-      " probability."
+      "• **Clinical Experience:** Transitioning into a hospital intern role or securing an acute-care APPE rotation significantly boosts match probability."
   )
 if research == "No":
   recommendations.append(
-      "• **Research / Presentations:** Submitting a case report or obtaining a"
-      " poster presentation adds a quick +15 points to your profile."
+      "• **Research / Presentations:** Submitting a case report or obtaining a poster presentation adds a quick +15 points to your profile."
   )
 if leadership in ["None", "Local Committee / Member"]:
   recommendations.append(
-      "• **Leadership Growth:** Stepping into an officer role within professional"
-      " organizations (like ASHP/SSHP) strengthens your executive profile."
+      "• **Leadership Growth:** Stepping into an officer role within professional organizations (like ASHP/SSHP) strengthens your executive profile."
   )
 if lor_strength in ["Standard", "Strong"]:
   recommendations.append(
-      "• **Recommendation Quality:** Cultivate relationships with clinical"
-      " preceptors who can speak directly to your direct-patient care skills for"
-      " an 'Exceptional' LOR."
+      "• **Recommendation Quality:** Cultivate relationships with clinical preceptors who can speak directly to your direct-patient care skills for an 'Exceptional' LOR."
   )
 
 if recommendations:
@@ -380,8 +389,7 @@ if recommendations:
     st.sidebar.markdown(rec)
 else:
   st.sidebar.markdown(
-      "Optimal profile configuration achieved. Focus on interview prep and letter"
-      " of intent customization."
+      "Optimal profile configuration achieved. Focus on interview prep and letter of intent customization."
   )
 
 # Sidebar Saved List Quick View
