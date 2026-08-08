@@ -154,6 +154,13 @@ st.caption(
     "Clinical Program Match & Strategic Evaluation Engine (ASHP Network)"
 )
 
+# --- DESKTOP EXPERIENCE NOTICE ---
+st.warning(
+    "💻 **Optimal Experience Notice:** For the best viewing experience and"
+    " easiest navigation through program metrics and data tables, please view"
+    " this platform on a laptop or desktop computer."
+)
+
 # --- PROFESSIONAL DISCLAIMER ---
 st.info(
     "**System Notice & Credits:** This platform was created by **Fareed"
@@ -721,7 +728,6 @@ with tab4:
     
   st.info("💡 **Benchmark Insight:** Your current calculator score is **" + f"{score:.1f}" + " / 100**. Review the sidebar recommendations to bridge gaps against your target program category.")
 
-# --- NEW TAB 5: CV MATCH EVALUATOR ---
 with tab5:
   st.header("📄 CV Residency Match Evaluator")
   st.caption("Upload your pharmacy student CV (PDF or TXT) to evaluate it against historical successful residency applicant benchmarks.")
@@ -733,7 +739,6 @@ with tab5:
     st.success("CV uploaded successfully and parsed into telemetry engine.")
     
     with st.spinner("Analyzing clinical rotation formatting, leadership blocks, and research footprint against historical matches..."):
-      # Simulated analytical breakdown based on user profile and general CV markers
       st.markdown("---")
       st.subheader("📊 CV Evaluation & Gap Analysis Report")
       
@@ -756,7 +761,6 @@ with tab5:
       
       st.info("💡 **Pro-Tip:** Residency directors spend an average of 45-60 seconds scanning a CV during initial cutoffs. Ensure your top 3 clinical accomplishments are visible on page one.")
 
-# --- NEW TAB 6: PROGRAM-SPECIFIC INTERVIEW HUB & ASHP LINKS ---
 with tab6:
   st.header("💡 Program Interview Hub & ASHP Question Mapping")
   st.select_slider("Select preparation readiness level", options=["Beginning", "Intermediate", "Advanced Mock Prep"])
@@ -795,7 +799,6 @@ with tab6:
     st.markdown("---")
     st.markdown("[Access Official ASHP Residency Interview Resources & Guidelines](https://www.ashp.org/professional-development/residency-information)")
 
-# --- NEW TAB 7: ADVANCED LOI GENERATOR ---
 with tab7:
   st.header("✍️ Advanced Letter of Intent (LOI) Builder & Guide")
   st.caption("Select your exact target program to generate a highly personalized, context-aware Letter of Intent draft alongside expert formatting steps.")
@@ -861,10 +864,3 @@ Sincerely,
     4. **Paragraph 4 (Why THIS Program?):** Mention specific program features found in their brochure or directory listing (e.g., specific staffing models, teaching certificates, or specialized rotation offerings). Generic letters that swap hospital names are immediately flagged.
     5. **Paragraph 5 (Conclusion):** Reiterate your enthusiasm, thank the committee for their time, and close professionally.
     """)
-
-# --- TAB 8: SAVED PORTFOLIO ---
-with tab6:
-  st.subheader("Placeholder for alignment") # handled in main layout tabs array
-  
-with st.tabs(["Program Query", "State & Track Filter", "🗺️ Interactive Map", "📊 Peer Cohort Analytics", "📄 CV Match Evaluator", "💡 Program Interview Hub", "✍️ Advanced LOI Generator"])[-1]:
-  pass # handled by explicit tab mapping above
