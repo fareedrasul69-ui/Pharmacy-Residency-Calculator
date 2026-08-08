@@ -2,53 +2,58 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="Residency Match & Tracker", page_icon="⚡", layout="wide"
+    page_title="Residency Match & Tracker", page_icon="💊", layout="wide"
 )
 
-# --- CUSTOM "AURA" DARK & MINIMALISTIC CSS STYLING ---
+# --- MODERN NEUTRAL & MINIMALISTIC CSS ---
 st.markdown(
     """
     <style>
-    /* Global App Background */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+    /* Global App Styling */
     .stApp {
-        background-color: #0b0f19;
-        color: #e2e8f0;
+        background-color: #fafaf9;
+        color: #1c1917;
+        font-family: 'Inter', sans-serif;
     }
     
     /* Sidebar Styling */
     [data-testid="stSidebar"] {
-        background-color: #0f172a;
-        border-right: 1px solid #1e293b;
+        background-color: #f5f5f4;
+        border-right: 1px solid #e7e5e4;
     }
     
     /* Input Fields & Selectboxes */
     .stTextInput input, .stSelectbox select, .stSlider {
-        background-color: #1e293b !important;
-        color: #f8fafc !important;
-        border: 1px solid #334155 !important;
+        background-color: #ffffff !important;
+        color: #1c1917 !important;
+        border: 1px solid #d6d3d1 !important;
         border-radius: 8px !important;
     }
     
-    /* Metric Cards / Containers */
+    /* Metric Cards */
     div[data-testid="stMetric"] {
-        background: #111827;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #1f2937;
+        background: #ffffff;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px solid #e7e5e4;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     
     /* Buttons */
     .stButton button {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        color: white;
+        background-color: #292524;
+        color: #ffffff;
         border: none;
         border-radius: 8px;
         font-weight: 500;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
     }
     .stButton button:hover {
-        background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
-        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        background-color: #44403c;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     
     /* Tabs Styling */
@@ -57,29 +62,26 @@ st.markdown(
         background-color: transparent;
     }
     .stTabs [data-baseweb="tab"] {
-        background-color: #111827;
+        background-color: #f5f5f4;
         border-radius: 8px;
-        color: #94a3b8;
-        border: 1px solid #1f2937;
+        color: #78716c;
+        border: 1px solid #e7e5e4;
         padding: 10px 20px;
+        font-weight: 500;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #1e293b !important;
-        color: #38bdf8 !important;
-        border: 1px solid #38bdf8 !important;
+        background-color: #ffffff !important;
+        color: #1c1917 !important;
+        border: 1px solid #d6d3d1 !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
     
     /* Info / Disclaimer Box */
     .stAlert {
-        background-color: #111827 !important;
-        border: 1px solid #1f2937 !important;
-        color: #94a3b8 !important;
+        background-color: #f5f5f4 !important;
+        border: 1px solid #e7e5e4 !important;
+        color: #44403c !important;
         border-radius: 10px;
-    }
-    
-    /* Dataframes */
-    dataframe {
-        background-color: #111827 !important;
     }
     </style>
     """,
@@ -116,7 +118,7 @@ df_programs = load_data()
 if "saved_list" not in st.session_state:
   st.session_state.saved_list = []
 
-st.title("⚡ RESIDENCY // INTELLIGENCE")
+st.title("Residency Match & Tracker")
 st.caption(
     "Clinical Program Match & Strategic Evaluation Engine (ASHP Network)"
 )
@@ -266,7 +268,7 @@ pharmacy_schools = [
 ]
 
 # --- SIDEBAR: STUDENT PROFILE INPUTS ---
-st.sidebar.header("01 // Candidate Profile")
+st.sidebar.header("Candidate Profile")
 
 user_pharm_school = st.sidebar.selectbox("College of Pharmacy", pharmacy_schools)
 gpa = st.sidebar.slider("PharmD GPA", 2.00, 4.00, 3.50, 0.01)
@@ -336,7 +338,7 @@ else:
 
 # Sidebar Saved List Quick View
 st.sidebar.markdown("---")
-st.sidebar.subheader(f"⭐ Saved List ({len(st.session_state.saved_list)})")
+st.sidebar.subheader(f"Saved List ({len(st.session_state.saved_list)})")
 if st.session_state.saved_list:
   for saved_item in st.session_state.saved_list:
     st.sidebar.write(f"- {saved_item}")
@@ -348,12 +350,12 @@ else:
 
 
 # --- MAIN PANEL: PROGRAM EXPLORATION ---
-st.header("02 // Exploration Matrix")
+st.header("Exploration Matrix")
 
 tab1, tab2, tab3 = st.tabs([
-    "🔍 Program Query",
-    "🗺️ State & Track Filter",
-    "⭐ Saved Portfolio",
+    "Program Query",
+    "State & Track Filter",
+    "Saved Portfolio",
 ])
 
 with tab1:
@@ -392,7 +394,7 @@ with tab1:
             required_score = 65
 
           st.write(
-              f"**Fit Status:** {'🟢 Optimal Match' if score >= required_score else '🟡 Reach Profile'}"
+              f"**Fit Status:** {'Optimal Match' if score >= required_score else 'Reach Profile'}"
           )
         with col_b:
           st.write(f"**Location:** {row.get('Location', 'N/A')}")
@@ -404,10 +406,10 @@ with tab1:
 
         website = row.get("Website", "")
         if pd.notna(website) and str(website).strip() != "":
-          st.markdown(f"🔗 **Official Portal:** [Access Link]({website})")
+          st.markdown(f"**Official Portal:** [Access Link]({website})")
 
         prog_name_str = row["Program Name"]
-        if st.button(f"⭐ Save to Portfolio", key=f"save_t1_{idx}"):
+        if st.button(f"Save to Portfolio", key=f"save_t1_{idx}"):
           if prog_name_str not in st.session_state.saved_list:
             st.session_state.saved_list.append(prog_name_str)
             st.success("Saved successfully.")
@@ -477,7 +479,7 @@ with tab2:
     st.dataframe(state_df[display_cols], use_container_width=True)
 
     st.markdown("---")
-    st.subheader("🎯 Program Competitiveness Inspector")
+    st.subheader("Program Competitiveness Inspector")
     
     selected_prog_name = st.selectbox(
         "Select Target Program",
@@ -489,7 +491,7 @@ with tab2:
       prog_row = state_df[
           state_df["Program Name"] == selected_prog_name
       ].iloc[0]
-      st.markdown(f"### 🏥 {prog_row.get('Program Name', 'N/A')}")
+      st.markdown(f"### {prog_row.get('Program Name', 'N/A')}")
 
       beds = prog_row.get("Total Beds", 0)
       is_reach = (
@@ -515,9 +517,9 @@ with tab2:
         st.metric(
             "Match Likelihood",
             (
-                "🟢 Optimal"
+                "Optimal"
                 if score >= req_score
-                else "🟡 Reach / Focus Required"
+                else "Reach / Focus Required"
             ),
         )
       with col_y:
@@ -527,9 +529,9 @@ with tab2:
         
         website = prog_row.get("Website", "")
         if pd.notna(website) and str(website).strip() != "":
-          st.markdown(f"🔗 **Official Link:** [Access]({website})")
+          st.markdown(f"**Official Link:** [Access]({website})")
 
-      if st.button(f"⭐ Save to Portfolio", key="save_inspector"):
+      if st.button(f"Save to Portfolio", key="save_inspector"):
         if selected_prog_name not in st.session_state.saved_list:
           st.session_state.saved_list.append(selected_prog_name)
           st.success("Saved successfully.")
@@ -553,7 +555,7 @@ with tab2:
     st.info("No records match the current filter selection.")
 
 with tab3:
-  st.header("⭐ Saved Portfolio & Target Links")
+  st.header("Saved Portfolio & Target Links")
   if st.session_state.saved_list:
     st.write(f"Total Bookmarked: **{len(st.session_state.saved_list)}**")
     for idx, item in enumerate(st.session_state.saved_list):
@@ -563,14 +565,14 @@ with tab3:
         match_rows = df_programs[df_programs["Program Name"] == item]
         if not match_rows.empty:
           r_info = match_rows.iloc[0]
-          st.write(f"📍 **Location:** {r_info.get('Location', 'N/A')} | 🏷️ **Category:** {r_info.get('Category', 'N/A')}")
+          st.write(f"**Location:** {r_info.get('Location', 'N/A')} | **Category:** {r_info.get('Category', 'N/A')}")
           web_link = r_info.get("Website", "")
           if pd.notna(web_link) and str(web_link).strip() != "":
-            st.markdown(f"🔗 **Official Portal:** [Open Official Page]({web_link})")
+            st.markdown(f"**Official Portal:** [Open Official Page]({web_link})")
           else:
             st.caption("No portal URL available.")
       with col_item2:
-        if st.button("🗑️ Remove", key=f"remove_{idx}"):
+        if st.button("Remove", key=f"remove_{idx}"):
           st.session_state.saved_list.remove(item)
           st.rerun()
       st.markdown("---")
