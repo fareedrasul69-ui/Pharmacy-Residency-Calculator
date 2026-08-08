@@ -31,6 +31,10 @@ def load_data():
 
 df_programs = load_data()
 
+# Initialize Session State for Saved Programs List
+if "saved_list" not in st.session_state:
+  st.session_state.saved_list = []
+
 st.title("💊 Pharmacy Residency Match & Competitiveness Calculator")
 
 # --- PROFESSIONAL DISCLAIMER ---
@@ -252,18 +256,34 @@ else:
       " CV)"
   )
 
+# Sidebar Saved Residency List Quick View
+st.sidebar.markdown("---")
+st.sidebar.subheader(f"⭐ My Saved List ({len(st.session_state.saved_list)})")
+if st.session_state.saved_list:
+  for saved_item in st.session_state.saved_list:
+    st.sidebar.write(f"- {saved_item}")
+  if st.sidebar.button("Clear Saved List"):
+    st.session_state.saved_list = []
+    st.rerun()
+else:
+  st.sidebar.caption("No programs saved yet.")
+
 
 # --- MAIN PANEL: PROGRAM EXPLORATION ---
 st.header("Step 2: Explore & Analyze Programs")
 
-tab1, tab2 = st.tabs(["🔍 Search by Program Name (e.g. NYU)", "🗺️ Filter by State & PGY-1 Track"])
+tab1, tab2, tab3 = st.tabs([
+    "🔍 Search by Program Name",
+    "🗺️ Filter by State & PGY-1 Track",
+    "⭐ My Saved Residency List & Links",
+])
 
 with tab1:
   search_query = st.text_input("Enter Hospital or Program Name", "", key="t1_search")
   if search_query:
     res = df_programs[
         df_programs["Program Name"]
-        .str.contains(search_query, case=False, na=False)
+        .str.contains(search_query, case=False, na=False]
     ]
 
     if not res.empty:
@@ -306,6 +326,21 @@ with tab1:
           st.write(f"**Deadline:** {row.get('Deadline_Display', 'N/A')}")
           st.write(f"**Positions:** {row.get('Number of Positions', 'N/A')}")
 
+        # Official Website Link
+        website = row.get("Website", "")
+        if pd.notna(website) and str(website).strip() != "":
+          st.markdown(f"🔗 **Official Program / ASHP Webpage:** [Visit Link]({website})")
+
+        # Save Button
+        prog_name_str = row["Program Name"]
+        if st.button(f"⭐ Save '{prog_name_str[:30]}...' to My List", key=f"save_t1_{idx}"):
+          if prog_name_str not in st.session_state.saved_list:
+            st.session_state.saved_list.append(prog_name_str)
+            st.success("Added to your saved list!")
+            st.rerun()
+          else:
+            st.info("Program is already in your saved list.")
+
         with st.expander("View Residency Description & Requirements"):
           st.write(
               "**Description:**",
@@ -332,7 +367,6 @@ with tab2:
     )
     selected_cat = st.selectbox("Program Category", categories, key="t2_cat")
   with col_s3:
-    # Subcategory filter based on text inside Residency Description or Program Name
     sub_focus = st.selectbox(
         "PGY-1 Sub-Focus Track",
         ["All Tracks", "Ambulatory Care", "Community-Based", "Health-System / Acute Care", "Managed Care"],
@@ -343,7 +377,6 @@ with tab2:
   if selected_cat != "All":
     state_df = state_df[state_df["Category"] == selected_cat]
 
-  # Filter by PGY-1 sub-focus text in description if selected
   if sub_focus != "All Tracks":
     keyword_map = {
         "Ambulatory Care": "ambulatory",
@@ -372,18 +405,19 @@ with tab2:
     st.dataframe(state_df[display_cols], use_container_width=True)
 
     st.markdown("---")
-    st.subheader("🎯 Program Competitiveness Inspector")
-    selected_prog_code = st.selectbox(
-        "Select a Program Code from this list to evaluate your competitiveness:",
-        state_df["Program Code"].dropna().unique(),
-        key="t2_inspector",
+    st.subheader("🎯 Program Competitiveness Inspector (Select by Program Name)")
+    
+    selected_prog_name = st.selectbox(
+        "Select a Program Name to check your competitiveness and link out:",
+        sorted(state_df["Program Name"].dropna().unique()),
+        key="t2_inspector_name",
     )
 
-    if selected_prog_code:
+    if selected_prog_name:
       prog_row = state_df[
-          state_df["Program Code"] == selected_prog_code
+          state_df["Program Name"] == selected_prog_name
       ].iloc[0]
-      st.markdown(f"### {prog_row.get('Program Name', 'N/A')}")
+      st.markdown(f"### 🏥 {prog_row.get('Program Name', 'N/A')}")
 
       beds = prog_row.get("Total Beds", 0)
       is_reach = (
@@ -418,6 +452,19 @@ with tab2:
         st.write(f"**Program Code:** {prog_row.get('Program Code', 'N/A')}")
         st.write(f"**Location:** {prog_row.get('Location', 'N/A')}")
         st.write(f"**Stipend:** {prog_row.get('Estimated Stipend', 'N/A')}")
+        
+        website = prog_row.get("Website", "")
+        if pd.notna(website) and str(website).strip() != "":
+          st.markdown(f"🔗 **Official Webpage:** [Open Link]({website})")
+
+      # Save Button for Inspector
+      if st.button(f"⭐ Save '{selected_prog_name[:30]}...' to My List", key="save_inspector"):
+        if selected_prog_name not in st.session_state.saved_list:
+          st.session_state.saved_list.append(selected_prog_name)
+          st.success("Added to your saved list!")
+          st.rerun()
+        else:
+          st.info("Program is already in your saved list.")
 
       with st.expander("View Full Program Details"):
         st.write(
@@ -433,3 +480,23 @@ with tab2:
         )
   else:
     st.info("No programs match your current filter and sub-focus combination.")
+
+with tab3:
+  st.header("⭐ Your Custom Saved Residency List")
+  if st.session_state.saved_list:
+    st.write(f"You have saved **{len(st.session_state.saved_list)}** programs:")
+    for idx, item in enumerate(st.session_state.saved_list):
+      st.markdown(f"### {idx+1}. {item}")
+      # Find full info for link output
+      match_rows = df_programs[df_programs["Program Name"] == item]
+      if not match_rows.empty:
+        r_info = match_rows.iloc[0]
+        st.write(f"📍 **Location:** {r_info.get('Location', 'N/A')} | 🏷️ **Category:** {r_info.get('Category', 'N/A')}")
+        web_link = r_info.get("Website", "")
+        if pd.notna(web_link) and str(web_link).strip() != "":
+          st.markdown(f"🔗 **Official ASHP / Program Webpage:** [Open Official Page]({web_link})")
+        else:
+          st.caption("No direct website URL listed in database.")
+      st.markdown("---")
+  else:
+    st.info("Your saved list is currently empty. Explore programs in Search or State tabs and click '⭐ Save' to build your list!")
