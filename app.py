@@ -231,7 +231,7 @@ pharmacy_schools = [
     "University of Kentucky",
     "University of Louisiana Monroe",
     "University of Maryland",
-    "University ofMassachusetts",
+    "University of Massachusetts",
     "University of Michigan",
     "University of Minnesota",
     "University of Mississippi",
@@ -295,9 +295,15 @@ leadership = st.sidebar.selectbox(
     "Leadership Tier",
     ["None", "Local Committee / Member", "Local Officer", "Executive / Multi-Officer"],
 )
+
+# Expanded LOR option with definition tooltips/labels
 lor_strength = st.sidebar.selectbox(
-    "Recommendation Quality",
-    ["Standard", "Strong", "Exceptional"],
+    "Recommendation Quality (LOR)",
+    [
+        "Standard (Generic check-box evaluations with general praise)",
+        "Strong (Detailed clinical insights from preceptors with positive performance remarks)",
+        "Exceptional (Top-tier narrative letters highlighting clinical autonomy, advanced problem solving, and leadership)",
+    ],
 )
 
 # --- SCORING ALGORITHM (100 Max) ---
@@ -323,18 +329,12 @@ elif leadership == "Local Officer":
 elif leadership == "Local Committee / Member":
   score += 5
 
-if lor_strength == "Exceptional":
+if "Exceptional" in lor_strength:
   score += 15
-elif lor_strength == "Strong":
+elif "Strong" in lor_strength:
   score += 10
 else:
   score += 5
-
-# Institutional Network Context Check (Subtle weight/insight factor)
-is_recognized_anchor_school = (
-    user_pharm_school != "Other / International"
-    and user_pharm_school != ""
-)
 
 score = min(score, 100.0)
 
@@ -358,7 +358,7 @@ if user_pharm_school == "Other / International":
   recommendations.append(
       "• **Institutional Context:** Coming from an external or international program means leaning heavily on strong regional APPE rotations and establishing direct connections with program preceptors."
   )
-elif is_recognized_anchor_school:
+elif user_pharm_school != "":
   recommendations.append(
       "• **Network Leverage:** Leverage your institution's alumni network and established regional preceptor ties to gain familiarity and comfort during application reviews."
   )
@@ -379,7 +379,7 @@ if leadership in ["None", "Local Committee / Member"]:
   recommendations.append(
       "• **Leadership Growth:** Stepping into an officer role within professional organizations (like ASHP/SSHP) strengthens your executive profile."
   )
-if lor_strength in ["Standard", "Strong"]:
+if "Standard" in lor_strength or "Strong" in lor_strength:
   recommendations.append(
       "• **Recommendation Quality:** Cultivate relationships with clinical preceptors who can speak directly to your direct-patient care skills for an 'Exceptional' LOR."
   )
@@ -445,17 +445,42 @@ with tab1:
           if is_reach:
             st.warning("Tier: Reach / High Intensity")
             required_score = 80
+            fit_status = "Reach Profile" if score < required_score else "Optimal Match"
           else:
             st.info("Tier: Standard / Competitive")
             required_score = 65
+            fit_status = "Optimal Match" if score >= required_score else "Moderate Reach"
 
-          st.write(
-              f"**Fit Status:** {'Optimal Match' if score >= required_score else 'Reach Profile'}"
-          )
+          st.write(f"**Fit Status:** {fit_status}")
+          
+          # Defined Likelihood breakdown & explicit recommendation
+          if score >= required_score:
+            match_def = "High probability of securing an interview invitation based on robust academic and professional alignment."
+            rec_action = "✅ **Recommendation:** Strongly Consider Applying. Your profile meets or exceeds target standards."
+          elif score >= (required_score - 15):
+            match_def = "Competitive profile with minor gaps; requires strong letters of intent and networking to offset."
+            rec_action = "⚠️ **Recommendation:** Consider with Caution. Focus on tailoring your letter of intent specifically to this site."
+          else:
+            match_def = "Significant variance from historical averages; high barrier to entry without unique distinguishing attributes."
+            rec_action = "❌ **Recommendation:** Unfavorable Match. Treat as a high-risk reach or skip to prioritize better-aligned programs."
+          
+          st.caption(f"**Likelihood Definition:** {match_def}")
+          st.markdown(rec_action)
+
         with col_b:
           st.write(f"**Location:** {row.get('Location', 'N/A')}")
           st.write(f"**Category:** {row.get('Category', 'N/A')}")
           st.write(f"**Stipend:** {row.get('Estimated Stipend', 'N/A')}")
+          
+          # MPJE / Universal Exam Info simulation based on state
+          state_code = row.get("State_Code", "Unknown")
+          umpje_states = ["IL", "CO", "ID", "ND", "UT", "WA"] # States accepting unified or flexible components
+          if state_code in umpje_states:
+            exam_policy = f"State MPJE Required (Participates/Aligns with multi-state standard options or UMJPE frameworks where applicable for {state_code})."
+          else:
+            exam_policy = f"Dedicated State MPJE Required for {state_code} licensure."
+          st.write(f"**Licensure Policy:** {exam_policy}")
+
         with col_c:
           st.write(f"**Deadline:** {row.get('Deadline_Display', 'N/A')}")
           st.write(f"**Slots:** {row.get('Number of Positions', 'N/A')}")
@@ -570,18 +595,34 @@ with tab2:
           st.info("Tier: Standard Program")
           req_score = 65
 
-        st.metric(
-            "Match Likelihood",
-            (
-                "Optimal"
-                if score >= req_score
-                else "Reach / Focus Required"
-            ),
-        )
+        fit_likelihood_text = "Optimal Match" if score >= req_score else "Reach / Focus Required"
+        st.metric("Match Likelihood Tier", fit_likelihood_text)
+
+        if score >= req_score:
+          match_def_2 = "High probability of interview extension; metrics satisfy or exceed historical cohort cutoffs."
+          rec_action_2 = "✅ **Recommendation:** Strongly Consider Applying."
+        elif score >= (req_score - 15):
+          match_def_2 = "Competitive profile with potential areas for improvement; heavily relies on a compelling letter of intent."
+          rec_action_2 = "⚠️ **Recommendation:** Consider with Caution."
+        else:
+          match_def_2 = "Profile sits well below historical benchmarks; application carries a high risk of rejection."
+          rec_action_2 = "❌ **Recommendation:** Unfavorable Match / Skip."
+
+        st.caption(f"**Definition:** {match_def_2}")
+        st.markdown(rec_action_2)
+
       with col_y:
         st.write(f"**Code:** {prog_row.get('Program Code', 'N/A')}")
         st.write(f"**Location:** {prog_row.get('Location', 'N/A')}")
         st.write(f"**Stipend:** {prog_row.get('Estimated Stipend', 'N/A')}")
+        
+        state_code_2 = prog_row.get("State_Code", selected_state)
+        umpje_states = ["IL", "CO", "ID", "ND", "UT", "WA"]
+        if state_code_2 in umpje_states:
+          exam_policy_2 = f"State MPJE Required (Compatible with flexible/multi-state frameworks or UMJPE alternatives in {state_code_2})."
+        else:
+          exam_policy_2 = f"Dedicated State MPJE Required for {state_code_2} licensure."
+        st.write(f"**Licensure Policy:** {exam_policy_2}")
         
         website = prog_row.get("Website", "")
         if pd.notna(website) and str(website).strip() != "":
