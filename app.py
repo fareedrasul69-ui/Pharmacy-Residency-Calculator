@@ -2,7 +2,88 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="Pharmacy Residency Match & Tracker", page_icon="💊", layout="wide"
+    page_title="Residency Match & Tracker", page_icon="⚡", layout="wide"
+)
+
+# --- CUSTOM "AURA" DARK & MINIMALISTIC CSS STYLING ---
+st.markdown(
+    """
+    <style>
+    /* Global App Background */
+    .stApp {
+        background-color: #0b0f19;
+        color: #e2e8f0;
+    }
+    
+    /* Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background-color: #0f172a;
+        border-right: 1px solid #1e293b;
+    }
+    
+    /* Input Fields & Selectboxes */
+    .stTextInput input, .stSelectbox select, .stSlider {
+        background-color: #1e293b !important;
+        color: #f8fafc !important;
+        border: 1px solid #334155 !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Metric Cards / Containers */
+    div[data-testid="stMetric"] {
+        background: #111827;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #1f2937;
+    }
+    
+    /* Buttons */
+    .stButton button {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .stButton button:hover {
+        background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    }
+    
+    /* Tabs Styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: transparent;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #111827;
+        border-radius: 8px;
+        color: #94a3b8;
+        border: 1px solid #1f2937;
+        padding: 10px 20px;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #1e293b !important;
+        color: #38bdf8 !important;
+        border: 1px solid #38bdf8 !important;
+    }
+    
+    /* Info / Disclaimer Box */
+    .stAlert {
+        background-color: #111827 !important;
+        border: 1px solid #1f2937 !important;
+        color: #94a3b8 !important;
+        border-radius: 10px;
+    }
+    
+    /* Dataframes */
+    dataframe {
+        background-color: #111827 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 
@@ -35,17 +116,17 @@ df_programs = load_data()
 if "saved_list" not in st.session_state:
   st.session_state.saved_list = []
 
-st.title("💊 Pharmacy Residency Match & Competitiveness Calculator")
+st.title("⚡ RESIDENCY // INTELLIGENCE")
+st.caption(
+    "Clinical Program Match & Strategic Evaluation Engine (ASHP Network)"
+)
 
 # --- PROFESSIONAL DISCLAIMER ---
 st.info(
-    "**Notice & Disclaimer:** This application is designed as an interactive"
-    " guide to assist pharmacy students with the residency application"
-    " process. The competitiveness calculations and program insights are"
-    " derived from the ASHP residency portal database and algorithmic scoring,"
-    " and do not serve as a definitive guarantee of admission or match"
-    " outcomes. Use this tool alongside professional mentorship and official"
-    " program guidelines."
+    "**System Notice:** This platform functions as an architectural guide for"
+    " residency pathways. Competitiveness analytics are modeled using portal"
+    " telemetry and metrics, and do not constitute absolute admission"
+    " guarantees. Cross-reference with official institutional criteria."
 )
 
 # --- COMPLETE LIST OF US COLLEGES OF PHARMACY ---
@@ -185,13 +266,13 @@ pharmacy_schools = [
 ]
 
 # --- SIDEBAR: STUDENT PROFILE INPUTS ---
-st.sidebar.header("Step 1: Your Profile Metrics")
+st.sidebar.header("01 // Candidate Profile")
 
 user_pharm_school = st.sidebar.selectbox("College of Pharmacy", pharmacy_schools)
 gpa = st.sidebar.slider("PharmD GPA", 2.00, 4.00, 3.50, 0.01)
 
 work_experience = st.sidebar.selectbox(
-    "Pharmacy Work Experience",
+    "Pharmacy Experience",
     [
         "None / Minimal",
         "Community / Retail Experience (> 1 Year)",
@@ -201,14 +282,14 @@ work_experience = st.sidebar.selectbox(
 )
 
 research = st.sidebar.selectbox(
-    "Active Research / Poster Presentation", ["No", "Yes"]
+    "Active Research / Posters", ["No", "Yes"]
 )
 leadership = st.sidebar.selectbox(
-    "Leadership Level",
+    "Leadership Tier",
     ["None", "Local Committee / Member", "Local Officer", "Executive / Multi-Officer"],
 )
 lor_strength = st.sidebar.selectbox(
-    "Letters of Recommendation (LOR) Quality",
+    "Recommendation Quality",
     ["Standard", "Strong", "Exceptional"],
 )
 
@@ -243,43 +324,40 @@ else:
   score += 5
 
 st.sidebar.markdown("---")
-st.sidebar.subheader(f"Calculated Profile Score: {score:.1f} / 100")
-st.sidebar.caption(f"Institution: {user_pharm_school}")
+st.sidebar.subheader(f"Calculated Score: {score:.1f} / 100")
+st.sidebar.caption(f"Inst: {user_pharm_school}")
 
 if score >= 80:
-  st.sidebar.success("Competitiveness: Highly Competitive (Strong PGY1/PGY2 Profile)")
+  st.sidebar.success("Status: Highly Competitive")
 elif score >= 65:
-  st.sidebar.info("Competitiveness: Competitive (Solid Standard Profile)")
+  st.sidebar.info("Status: Competitive Standard")
 else:
-  st.sidebar.warning(
-      "Competitiveness: Developing (Focus on targeted program selection & boosting"
-      " CV)"
-  )
+  st.sidebar.warning("Status: Developing Profile")
 
-# Sidebar Saved Residency List Quick View
+# Sidebar Saved List Quick View
 st.sidebar.markdown("---")
-st.sidebar.subheader(f"⭐ My Saved List ({len(st.session_state.saved_list)})")
+st.sidebar.subheader(f"⭐ Saved List ({len(st.session_state.saved_list)})")
 if st.session_state.saved_list:
   for saved_item in st.session_state.saved_list:
     st.sidebar.write(f"- {saved_item}")
-  if st.sidebar.button("Clear Saved List"):
+  if st.sidebar.button("Clear Entire List"):
     st.session_state.saved_list = []
     st.rerun()
 else:
-  st.sidebar.caption("No programs saved yet.")
+  st.sidebar.caption("No programs bookmarked.")
 
 
 # --- MAIN PANEL: PROGRAM EXPLORATION ---
-st.header("Step 2: Explore & Analyze Programs")
+st.header("02 // Exploration Matrix")
 
 tab1, tab2, tab3 = st.tabs([
-    "🔍 Search by Program Name",
-    "🗺️ Filter by State & PGY-1 Track",
-    "⭐ My Saved Residency List & Links",
+    "🔍 Program Query",
+    "🗺️ State & Track Filter",
+    "⭐ Saved Portfolio",
 ])
 
 with tab1:
-  search_query = st.text_input("Enter Hospital or Program Name", "", key="t1_search")
+  search_query = st.text_input("Search Hospital or Program Name", "", key="t1_search")
   if search_query:
     res = df_programs[
         df_programs["Program Name"]
@@ -287,9 +365,7 @@ with tab1:
     ]
 
     if not res.empty:
-      st.markdown(
-          f"### Found **{len(res)}** matching programs for '{search_query}'"
-      )
+      st.markdown(f"### Results Found: **{len(res)}**")
       for idx, row in res.iterrows():
         st.markdown("---")
         st.subheader(row["Program Name"])
@@ -309,14 +385,14 @@ with tab1:
         col_a, col_b, col_c = st.columns(3)
         with col_a:
           if is_reach:
-            st.warning("Tier: Highly Competitive (Reach)")
+            st.warning("Tier: Reach / High Intensity")
             required_score = 80
           else:
-            st.info("Tier: Competitive / Standard")
+            st.info("Tier: Standard / Competitive")
             required_score = 65
 
           st.write(
-              f"**Match Likelihood:** {'🟢 Strong Fit' if score >= required_score else '🟡 Reach / Moderate Fit'}"
+              f"**Fit Status:** {'🟢 Optimal Match' if score >= required_score else '🟡 Reach Profile'}"
           )
         with col_b:
           st.write(f"**Location:** {row.get('Location', 'N/A')}")
@@ -324,24 +400,22 @@ with tab1:
           st.write(f"**Stipend:** {row.get('Estimated Stipend', 'N/A')}")
         with col_c:
           st.write(f"**Deadline:** {row.get('Deadline_Display', 'N/A')}")
-          st.write(f"**Positions:** {row.get('Number of Positions', 'N/A')}")
+          st.write(f"**Slots:** {row.get('Number of Positions', 'N/A')}")
 
-        # Official Website Link
         website = row.get("Website", "")
         if pd.notna(website) and str(website).strip() != "":
-          st.markdown(f"🔗 **Official Program / ASHP Webpage:** [Visit Link]({website})")
+          st.markdown(f"🔗 **Official Portal:** [Access Link]({website})")
 
-        # Save Button
         prog_name_str = row["Program Name"]
-        if st.button(f"⭐ Save '{prog_name_str[:30]}...' to My List", key=f"save_t1_{idx}"):
+        if st.button(f"⭐ Save to Portfolio", key=f"save_t1_{idx}"):
           if prog_name_str not in st.session_state.saved_list:
             st.session_state.saved_list.append(prog_name_str)
-            st.success("Added to your saved list!")
+            st.success("Saved successfully.")
             st.rerun()
           else:
-            st.info("Program is already in your saved list.")
+            st.info("Already in portfolio.")
 
-        with st.expander("View Residency Description & Requirements"):
+        with st.expander("Inspect Requirements & Specifications"):
           st.write(
               "**Description:**",
               row.get("Residency Description", "No description available."),
@@ -354,7 +428,7 @@ with tab1:
               ),
           )
     else:
-      st.info("No matching programs found.")
+      st.info("No records match query.")
 
 with tab2:
   col_s1, col_s2, col_s3 = st.columns(3)
@@ -365,10 +439,10 @@ with tab2:
     categories = ["All"] + sorted(
         df_programs["Category"].dropna().unique().tolist()
     )
-    selected_cat = st.selectbox("Program Category", categories, key="t2_cat")
+    selected_cat = st.selectbox("Category", categories, key="t2_cat")
   with col_s3:
     sub_focus = st.selectbox(
-        "PGY-1 Sub-Focus Track",
+        "Sub-Focus Track",
         ["All Tracks", "Ambulatory Care", "Community-Based", "Health-System / Acute Care", "Managed Care"],
         key="t2_subcat"
     )
@@ -390,9 +464,7 @@ with tab2:
         state_df["Program Name"].str.contains(kw, case=False, na=False)
     ]
 
-  st.markdown(
-      f"### Found **{len(state_df)}** programs matching your filters in **{selected_state}**"
-  )
+  st.markdown(f"### Records Found: **{len(state_df)}** in **{selected_state}**")
 
   if not state_df.empty:
     display_cols = [
@@ -405,10 +477,10 @@ with tab2:
     st.dataframe(state_df[display_cols], use_container_width=True)
 
     st.markdown("---")
-    st.subheader("🎯 Program Competitiveness Inspector (Select by Program Name)")
+    st.subheader("🎯 Program Competitiveness Inspector")
     
     selected_prog_name = st.selectbox(
-        "Select a Program Name to check your competitiveness and link out:",
+        "Select Target Program",
         sorted(state_df["Program Name"].dropna().unique()),
         key="t2_inspector_name",
     )
@@ -434,68 +506,73 @@ with tab2:
       col_x, col_y = st.columns(2)
       with col_x:
         if is_reach:
-          st.warning("Tier: Highly Competitive (Reach Program)")
+          st.warning("Tier: Reach Program")
           req_score = 80
         else:
-          st.info("Tier: Competitive / Standard Program")
+          st.info("Tier: Standard Program")
           req_score = 65
 
         st.metric(
-            "Your Match Likelihood",
+            "Match Likelihood",
             (
-                "🟢 Strong Fit"
+                "🟢 Optimal"
                 if score >= req_score
-                else "🟡 Reach / Needs Focus"
+                else "🟡 Reach / Focus Required"
             ),
         )
       with col_y:
-        st.write(f"**Program Code:** {prog_row.get('Program Code', 'N/A')}")
+        st.write(f"**Code:** {prog_row.get('Program Code', 'N/A')}")
         st.write(f"**Location:** {prog_row.get('Location', 'N/A')}")
         st.write(f"**Stipend:** {prog_row.get('Estimated Stipend', 'N/A')}")
         
         website = prog_row.get("Website", "")
         if pd.notna(website) and str(website).strip() != "":
-          st.markdown(f"🔗 **Official Webpage:** [Open Link]({website})")
+          st.markdown(f"🔗 **Official Link:** [Access]({website})")
 
-      # Save Button for Inspector
-      if st.button(f"⭐ Save '{selected_prog_name[:30]}...' to My List", key="save_inspector"):
+      if st.button(f"⭐ Save to Portfolio", key="save_inspector"):
         if selected_prog_name not in st.session_state.saved_list:
           st.session_state.saved_list.append(selected_prog_name)
-          st.success("Added to your saved list!")
+          st.success("Saved successfully.")
           st.rerun()
         else:
-          st.info("Program is already in your saved list.")
+          st.info("Already in portfolio.")
 
-      with st.expander("View Full Program Details"):
+      with st.expander("View Specifications"):
         st.write(
             "**Description:**",
             prog_row.get("Residency Description", "No description available."),
         )
         st.write(
-            "**Eligibility Requirements:**",
+            "**Eligibility:**",
             prog_row.get(
                 "Eligibility Requirements for Program",
-                "No specific requirements listed.",
+                "No requirements listed.",
             ),
         )
   else:
-    st.info("No programs match your current filter and sub-focus combination.")
+    st.info("No records match the current filter selection.")
 
 with tab3:
-  st.header("⭐ Your Custom Saved Residency List")
+  st.header("⭐ Saved Portfolio & Target Links")
   if st.session_state.saved_list:
-    st.write(f"You have saved **{len(st.session_state.saved_list)}** programs:")
+    st.write(f"Total Bookmarked: **{len(st.session_state.saved_list)}**")
     for idx, item in enumerate(st.session_state.saved_list):
-      st.markdown(f"### {idx+1}. {item}")
-      match_rows = df_programs[df_programs["Program Name"] == item]
-      if not match_rows.empty:
-        r_info = match_rows.iloc[0]
-        st.write(f"📍 **Location:** {r_info.get('Location', 'N/A')} | 🏷️ **Category:** {r_info.get('Category', 'N/A')}")
-        web_link = r_info.get("Website", "")
-        if pd.notna(web_link) and str(web_link).strip() != "":
-          st.markdown(f"🔗 **Official ASHP / Program Webpage:** [Open Official Page]({web_link})")
-        else:
-          st.caption("No direct website URL listed in database.")
+      col_item1, col_item2 = st.columns([4, 1])
+      with col_item1:
+        st.markdown(f"### {idx+1}. {item}")
+        match_rows = df_programs[df_programs["Program Name"] == item]
+        if not match_rows.empty:
+          r_info = match_rows.iloc[0]
+          st.write(f"📍 **Location:** {r_info.get('Location', 'N/A')} | 🏷️ **Category:** {r_info.get('Category', 'N/A')}")
+          web_link = r_info.get("Website", "")
+          if pd.notna(web_link) and str(web_link).strip() != "":
+            st.markdown(f"🔗 **Official Portal:** [Open Official Page]({web_link})")
+          else:
+            st.caption("No portal URL available.")
+      with col_item2:
+        if st.button("🗑️ Remove", key=f"remove_{idx}"):
+          st.session_state.saved_list.remove(item)
+          st.rerun()
       st.markdown("---")
   else:
-    st.info("Your saved list is currently empty. Explore programs in Search or State tabs and click '⭐ Save' to build your list!")
+    st.info("Portfolio is currently empty. Bookmark programs from search or state tabs.")
