@@ -283,7 +283,7 @@ with tab1:
   if search_query:
     res = df_programs[
         df_programs["Program Name"]
-        .str.contains(search_query, case=False, na=False]
+        .str.contains(search_query, case=False, na=False)
     ]
 
     if not res.empty:
@@ -487,7 +487,6 @@ with tab3:
     st.write(f"You have saved **{len(st.session_state.saved_list)}** programs:")
     for idx, item in enumerate(st.session_state.saved_list):
       st.markdown(f"### {idx+1}. {item}")
-      # Find full info for link output
       match_rows = df_programs[df_programs["Program Name"] == item]
       if not match_rows.empty:
         r_info = match_rows.iloc[0]
