@@ -5,98 +5,104 @@ st.set_page_config(
     page_title="Residency Match & Tracker", page_icon="💊", layout="wide"
 )
 
-# --- MODERN NEUTRAL & MINIMALISTIC CSS (FORCE LIGHT MODE COMPATIBILITY) ---
+# --- MODERN POLISHED NEUTRAL & MINIMALISTIC CSS ---
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
-    /* Force light mode variables across Streamlit elements to prevent dark mode contrast break */
     :root {
         --background-color: #f8f9fa;
         --secondary-background: #ffffff;
-        --text-color: #212529;
-        --border-color: #e9ecef;
+        --text-color: #1e293b;
+        --border-color: #e2e8f0;
+        --primary-color: #0d9488;
     }
 
     .stApp {
         background-color: #f8f9fa !important;
-        color: #212529 !important;
+        color: #1e293b !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
     [data-testid="stSidebar"] {
         background-color: #ffffff !important;
-        border-right: 1px solid #e9ecef !important;
-        color: #212529 !important;
+        border-right: 1px solid #e2e8f0 !important;
+        color: #1e293b !important;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.01);
     }
     
     [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] span {
-        color: #212529 !important;
+        color: #1e293b !important;
     }
     
     .stTextInput input, .stSelectbox select, .stSlider {
         background-color: #ffffff !important;
-        color: #212529 !important;
-        border: 1px solid #ced4da !important;
-        border-radius: 8px !important;
+        color: #1e293b !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 10px !important;
+        padding: 8px !important;
     }
     
     div[data-testid="stMetric"] {
         background: #ffffff !important;
-        padding: 16px;
-        border-radius: 12px;
-        border: 1px solid #e9ecef !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
     }
     
     div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricValue"] {
-        color: #212529 !important;
+        color: #1e293b !important;
     }
     
     .stButton button {
         background-color: #0d9488 !important;
         color: #ffffff !important;
         border: none;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.2s ease;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        padding: 10px 20px !important;
+        transition: all 0.2s ease-in-out;
     }
     .stButton button:hover {
         background-color: #0f766e !important;
         color: #ffffff !important;
-        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+        box-shadow: 0 6px 15px rgba(13, 148, 136, 0.25);
+        transform: translateY(-1px);
     }
     
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 10px;
         background-color: transparent;
+        padding-bottom: 10px;
     }
     .stTabs [data-baseweb="tab"] {
         background-color: #ffffff !important;
-        border-radius: 8px;
-        color: #6c757d !important;
-        border: 1px solid #e9ecef !important;
-        padding: 10px 20px;
-        font-weight: 500;
+        border-radius: 10px !important;
+        color: #64748b !important;
+        border: 1px solid #e2e8f0 !important;
+        padding: 12px 24px !important;
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .stTabs [aria-selected="true"] {
         background-color: #0d9488 !important;
         color: #ffffff !important;
         border: 1px solid #0d9488 !important;
-        box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
+        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25) !important;
     }
     
     .stAlert {
         background-color: #ffffff !important;
-        border: 1px solid #e9ecef !important;
-        color: #495057 !important;
-        border-radius: 10px;
+        border: 1px solid #e2e8f0 !important;
+        color: #334155 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.01);
     }
     
-    /* Ensure markdown text remains dark and readable regardless of system scheme */
     p, span, label, h1, h2, h3, h4, h5, h6, li {
-        color: #212529;
+        color: #1e293b;
     }
     </style>
     """,
@@ -170,6 +176,43 @@ df_programs = load_data()
 
 if "saved_list" not in st.session_state:
   st.session_state.saved_list = []
+
+# --- POPUP INSTRUCTIONS MODAL ---
+if "show_instructions" not in st.session_state:
+  st.session_state.show_instructions = True
+
+@st.dialog("💊 Welcome to the Residency Match & Tracker — User Guide")
+def instructions_popup():
+  st.markdown("""
+  ### Welcome, Future Pharmacy Resident! 
+  This platform is designed to serve as your comprehensive command center for navigating the ASHP residency match process. Before you begin exploring programs and evaluating your candidacy, please review how to use this tool effectively:
+
+  #### 1. ⚙️ Build Your Candidate Profile (Sidebar)
+  * Input your **College of Pharmacy**, **PharmD GPA**, **Honor Society Memberships (Rho Chi / Phi Lambda Sigma)**, work experience, research background, leadership tier, and recommendation letter quality.
+  * The system instantly calculates your **Match Competitiveness Score (out of 100)** and generates live, tailored recommendations to strengthen your application.
+
+  #### 2. 🔍 Explore Programs (Exploration Matrix Tabs)
+  * **Program Query:** Search specific hospitals or health systems across the national database.
+  * **State & Track Filter:** Filter programs by state, category, and sub-focus tracks (Ambulatory Care, Acute Care, Managed Care, etc.). Inspect detailed competitiveness breakdowns for any site.
+  * **Interactive Map:** Visualize residency hub distributions across the US.
+  * **Peer Cohort Analytics:** Compare your profile metrics against historical benchmarks for Academic Medical Centers vs. Community/Managed Care programs.
+  * **CV Match Evaluator:** Upload your CV document to receive a structured telemetry gap analysis.
+  * **Program Interview Hub:** Review tailored ASHP common prompt alignments and practice scenario questions specific to your target program.
+  * **Advanced LOI Generator:** Dynamically generate a customized, context-aware Letter of Intent draft based on your chosen program and clinical passion.
+
+  #### 3. 🔖 Track & Save
+  * Bookmark programs using the **"Save to Portfolio"** button in program inspect views to build your personal application target list in the sidebar.
+
+  ---
+  *Created by **Fareed Rasul**. Click below to close this guide and enter the platform.*
+  """)
+  if st.button("🚀 Enter Platform & Start Tracking", use_container_width=True):
+    st.session_state.show_instructions = False
+    st.rerun()
+
+if st.session_state.show_instructions:
+  instructions_popup()
+
 
 st.title("Residency Match & Tracker")
 st.caption(
