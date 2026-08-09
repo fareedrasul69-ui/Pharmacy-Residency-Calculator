@@ -12,53 +12,53 @@ st.markdown(
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     :root {
-        --background-color: #fcfbfa;
-        --secondary-background: #ffffff;
-        --text-color: #2c2420;
-        --border-color: #e6dfdb;
-        --primary-color: #bfa18f;
+        --background-color: #FAF6F0;
+        --secondary-background: #FFFFFF;
+        --text-color: #5C4E43;
+        --border-color: #E3D5C9;
+        --primary-color: #C8AD93;
     }
 
     .stApp {
-        background-color: #fcfbfa !important;
-        color: #2c2420 !important;
+        background-color: #FAF6F0 !important;
+        color: #5C4E43 !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
     [data-testid="stSidebar"] {
-        background-color: #f7f4f0 !important;
-        border-right: 1px solid #e6dfdb !important;
-        color: #2c2420 !important;
+        background-color: #F4EDE4 !important;
+        border-right: 1px solid #E3D5C9 !important;
+        color: #5C4E43 !important;
         box-shadow: 2px 0 10px rgba(0,0,0,0.01);
     }
     
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] span {
-        color: #2c2420 !important;
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] span, [data-testid="stSidebar"] div {
+        color: #5C4E43 !important;
     }
     
     .stTextInput input, .stSelectbox select, .stSlider {
-        background-color: #ffffff !important;
-        color: #2c2420 !important;
-        border: 1px solid #d9cec7 !important;
+        background-color: #FFFFFF !important;
+        color: #5C4E43 !important;
+        border: 1px solid #D9C8B9 !important;
         border-radius: 10px !important;
         padding: 8px !important;
     }
     
     div[data-testid="stMetric"] {
-        background: #ffffff !important;
+        background: #FFFFFF !important;
         padding: 20px;
         border-radius: 16px;
-        border: 1px solid #e6dfdb !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+        border: 1px solid #E3D5C9 !important;
+        box-shadow: 0 4px 6px -1px rgba(92, 78, 67, 0.03), 0 2px 4px -1px rgba(92, 78, 67, 0.02);
     }
     
     div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricValue"] {
-        color: #2c2420 !important;
+        color: #5C4E43 !important;
     }
     
     .stButton button {
-        background-color: #bfa18f !important;
-        color: #ffffff !important;
+        background-color: #C8AD93 !important;
+        color: #FFFFFF !important;
         border: none;
         border-radius: 10px !important;
         font-weight: 600 !important;
@@ -66,9 +66,9 @@ st.markdown(
         transition: all 0.2s ease-in-out;
     }
     .stButton button:hover {
-        background-color: #ad8f7d !important;
-        color: #ffffff !important;
-        box-shadow: 0 6px 15px rgba(191, 161, 143, 0.25);
+        background-color: #B59A80 !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 6px 15px rgba(200, 173, 147, 0.25);
         transform: translateY(-1px);
     }
     
@@ -78,43 +78,43 @@ st.markdown(
         padding-bottom: 10px;
     }
     .stTabs [data-baseweb="tab"] {
-        background-color: #f7f4f0 !important;
+        background-color: #F4EDE4 !important;
         border-radius: 10px !important;
-        color: #7a6e65 !important;
-        border: 1px solid #e6dfdb !important;
+        color: #8C7A6B !important;
+        border: 1px solid #E3D5C9 !important;
         padding: 12px 24px !important;
         font-weight: 600;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        box-shadow: 0 1px 3px rgba(92, 78, 67, 0.02);
     }
     .stTabs [aria-selected="true"] {
-        background-color: #bfa18f !important;
-        color: #ffffff !important;
-        border: 1px solid #bfa18f !important;
-        box-shadow: 0 4px 12px rgba(191, 161, 143, 0.25) !important;
+        background-color: #C8AD93 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #C8AD93 !important;
+        box-shadow: 0 4px 12px rgba(200, 173, 147, 0.25) !important;
     }
     
     .stAlert {
-        background-color: #f7f4f0 !important;
-        border: 1px solid #e6dfdb !important;
-        color: #4a3f38 !important;
+        background-color: #F4EDE4 !important;
+        border: 1px solid #E3D5C9 !important;
+        color: #5C4E43 !important;
         border-radius: 12px !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        box-shadow: 0 2px 4px rgba(92, 78, 67, 0.01);
     }
     
     p, span, label, h1, h2, h3, h4, h5, h6, li {
-        color: #2c2420;
+        color: #5C4E43;
     }
 
-    /* Custom styling for dialog / modal wrapper to match light cream aesthetic */
+    /* Custom styling for dialog / modal wrapper to match neutral cream palette */
     [data-testid="stModal"] {
-        background-color: rgba(44, 36, 32, 0.4) !important;
+        background-color: rgba(92, 78, 67, 0.35) !important;
     }
     [data-testid="stModal"] > div {
-        background-color: #fffaf5 !important;
-        border: 1px solid #e6dfdb !important;
+        background-color: #FAF6F0 !important;
+        border: 1px solid #E3D5C9 !important;
         border-radius: 20px !important;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02) !important;
-        color: #2c2420 !important;
+        box-shadow: 0 20px 25px -5px rgba(92, 78, 67, 0.08), 0 10px 10px -5px rgba(92, 78, 67, 0.04) !important;
+        color: #5C4E43 !important;
     }
     </style>
     """,
@@ -200,23 +200,23 @@ def instructions_popup():
   This platform is designed to serve as your comprehensive command center for navigating the ASHP residency match process. Before you begin exploring programs and evaluating your candidacy, please review how to use this tool effectively:
 
   #### 1. Build Your Candidate Profile (Sidebar)
-  * Input your **College of Pharmacy**, **PharmD GPA**, **Honor Society Memberships (Rho Chi / Phi Lambda Sigma)**, work experience, research background, leadership tier, and recommendation letter quality.
-  * The system instantly calculates your **Match Competitiveness Score (out of 100)** and generates live, tailored recommendations to strengthen your application.
+  * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships (Rho Chi / Phi Lambda Sigma), work experience, research background, leadership tier, and recommendation letter quality.
+  * The system instantly calculates your Match Competitiveness Score (out of 100) and generates live, tailored recommendations to strengthen your application.
 
   #### 2. Explore Programs (Exploration Matrix Tabs)
-  * **Program Query:** Search specific hospitals or health systems across the national database.
-  * **State & Track Filter:** Filter programs by state, category, and sub-focus tracks (Ambulatory Care, Acute Care, Managed Care, etc.). Inspect detailed competitiveness breakdowns for any site.
-  * **Interactive Map:** Visualize residency hub distributions across the US.
-  * **Peer Cohort Analytics:** Compare your profile metrics against historical benchmarks for Academic Medical Centers vs. Community/Managed Care programs.
-  * **CV Match Evaluator:** Upload your CV document to receive a structured telemetry gap analysis.
-  * **Program Interview Hub:** Review tailored ASHP common prompt alignments and practice scenario questions specific to your target program.
-  * **Advanced LOI Generator:** Dynamically generate a customized, context-aware Letter of Intent draft based on your chosen program and clinical passion.
+  * Program Query: Search specific hospitals or health systems across the national database.
+  * State & Track Filter: Filter programs by state, category, and sub-focus tracks (Ambulatory Care, Acute Care, Managed Care, etc.). Inspect detailed competitiveness breakdowns for any site.
+  * Interactive Map: Visualize residency hub distributions across the US.
+  * Peer Cohort Analytics: Compare your profile metrics against historical benchmarks for Academic Medical Centers vs. Community/Managed Care programs.
+  * CV Match Evaluator: Upload your CV document to receive a structured telemetry gap analysis.
+  * Program Interview Hub: Review tailored ASHP common prompt alignments and practice scenario questions specific to your target program.
+  * Advanced LOI Generator: Dynamically generate a customized, context-aware Letter of Intent draft based on your chosen program and clinical passion.
 
   #### 3. Track & Save
-  * Bookmark programs using the **Save to Portfolio** button in program inspect views to build your personal application target list in the sidebar.
+  * Bookmark programs using the Save to Portfolio button in program inspect views to build your personal application target list in the sidebar.
 
   ---
-  *Created by **Fareed Rasul**. Click below to close this guide and enter the platform.*
+  Created by Fareed Rasul. Click below to close this guide and enter the platform.
   """)
   if st.button("Enter Platform and Start Tracking", use_container_width=True):
     st.session_state.show_instructions = False
@@ -233,19 +233,19 @@ st.caption(
 
 # --- DESKTOP EXPERIENCE NOTICE ---
 st.warning(
-    "**Optimal Experience Notice:** For the best viewing experience and"
+    "Optimal Experience Notice: For the best viewing experience and"
     " easiest navigation through program metrics and data tables, please view"
     " this platform on a laptop or desktop computer."
 )
 
 # --- PROFESSIONAL DISCLAIMER ---
 st.info(
-    "**System Notice & Credits:** This platform was created by **Fareed"
+    "System Notice & Credits: This platform was created by **Fareed"
     " Rasul**. It functions as an architectural guide for residency pathways."
     " Competitiveness analytics are modeled using portal telemetry and"
     " metrics, and do not constitute absolute admission guarantees."
     " Cross-reference with official institutional criteria.\n\n"
-    "**Connect with Fareed:**\n"
+    "Connect with Fareed:\n"
     "- TikTok: [@fareedrasul](https://www.tiktok.com/@fareedrasul)\n"
     "- Instagram: [@fareed_rasul](https://www.instagram.com/fareed_rasul)\n"
     "- Email: [fareedrasul69@gmail.com](mailto:fareedrasul69@gmail.com)"
@@ -486,36 +486,36 @@ st.sidebar.subheader("Live Profile Recommendations")
 recommendations = []
 if user_pharm_school == "Other / International":
   recommendations.append(
-      "• **Institutional Context:** Coming from an external or international program means leaning heavily on strong regional APPE rotations and establishing direct connections with program preceptors."
+      "• Institutional Context: Coming from an external or international program means leaning heavily on strong regional APPE rotations and establishing direct connections with program preceptors."
   )
 elif user_pharm_school != "":
   recommendations.append(
-      "• **Network Leverage:** Leverage your institution's alumni network and established regional preceptor ties to gain familiarity and comfort during application reviews."
+      "• Network Leverage: Leverage your institution's alumni network and established regional preceptor ties to gain familiarity and comfort during application reviews."
   )
 
 if gpa < 3.5:
   recommendations.append(
-      "• **GPA Elevation:** Consider highlighting high grades in advanced therapeutics or securing strong APPE rotation evaluations to compensate for a sub-3.5 GPA."
+      "• GPA Elevation: Consider highlighting high grades in advanced therapeutics or securing strong APPE rotation evaluations to compensate for a sub-3.5 GPA."
   )
 if honor_society == "None" and gpa >= 3.5:
   recommendations.append(
-      "• **Honor Society Eligibility:** With a strong GPA, check your academic standing for Rho Chi or PLS eligibility to add formal academic prestige to your application."
+      "• Honor Society Eligibility: With a strong GPA, check your academic standing for Rho Chi or PLS eligibility to add formal academic prestige to your application."
   )
 if work_experience in ["None / Minimal", "Community / Retail Experience (> 1 Year)"]:
   recommendations.append(
-      "• **Clinical Experience:** Transitioning into a hospital intern role or securing an acute-care APPE rotation significantly boosts match probability."
+      "• Clinical Experience: Transitioning into a hospital intern role or securing an acute-care APPE rotation significantly boosts match probability."
   )
 if research == "No":
   recommendations.append(
-      "• **Research / Presentations:** Submitting a case report or obtaining a poster presentation adds a quick +15 points to your profile."
+      "• Research / Presentations: Submitting a case report or obtaining a poster presentation adds a quick +15 points to your profile."
   )
 if leadership in ["None", "Local Committee / Member"]:
   recommendations.append(
-      "• **Leadership Growth:** Stepping into an officer role within professional organizations (like ASHP/SSHP) strengthens your executive profile."
+      "• Leadership Growth: Stepping into an officer role within professional organizations (like ASHP/SSHP) strengthens your executive profile."
   )
 if "Standard" in lor_strength or "Strong" in lor_strength:
   recommendations.append(
-      "• **Recommendation Quality:** Cultivate relationships with clinical preceptors who can speak directly to your direct-patient care skills for an 'Exceptional' LOR."
+      "• Recommendation Quality: Cultivate relationships with clinical preceptors who can speak directly to your direct-patient care skills for an 'Exceptional' LOR."
   )
 
 if recommendations:
@@ -798,7 +798,7 @@ with tab3:
     map_data = df_programs
     
   if not map_data.empty:
-    st.map(map_data, latitude="lat", longitude="lon", size=30, color="#bfa18f")
+    st.map(map_data, latitude="lat", longitude="lon", size=30, color="#C8AD93")
     st.write(f"Displaying **{len(map_data)}** program nodes on map canvas.")
   else:
     st.warning("No coordinates available for current map configuration.")
@@ -811,23 +811,23 @@ with tab4:
   with col_p1:
     st.subheader("Academic Medical Centers (AMCs) / Large Hospitals")
     st.markdown("""
-    * **Average GPA:** 3.74 - 3.92
-    * **Honor Societies:** Over 70% of matched applicants hold membership in Rho Chi (pharmaceutical honor society) or Phi Lambda Sigma (PLS leadership society).
-    * **Hospital Internship Duration:** 1.5 to 3 Years (Acute Care Focus)
-    * **Research / Posters:** 85% had at least 1 published poster or case report.
-    * **Leadership Engagement:** Multiple active student organization board positions.
+    * Average GPA: 3.74 - 3.92
+    * Honor Societies: Over 70% of matched applicants hold membership in Rho Chi (pharmaceutical honor society) or Phi Lambda Sigma (PLS leadership society).
+    * Hospital Internship Duration: 1.5 to 3 Years (Acute Care Focus)
+    * Research / Posters: 85% had at least 1 published poster or case report.
+    * Leadership Engagement: Multiple active student organization board positions.
     """)
   with col_p2:
     st.subheader("Community Pharmacy & Managed Care Programs")
     st.markdown("""
-    * **Average GPA:** 3.42 - 3.70
-    * **Honor Societies:** Highly valued as an indicator of academic discipline and professional commitment.
-    * **Work Experience:** Retail or community longitudinal projects (> 1 Year)
-    * **Research / Posters:** 40% had formal poster presentations.
-    * **Leadership Engagement:** Committee members or local chapter involvement.
+    * Average GPA: 3.42 - 3.70
+    * Honor Societies: Highly valued as an indicator of academic discipline and professional commitment.
+    * Work Experience: Retail or community longitudinal projects (> 1 Year)
+    * Research / Posters: 40% had formal poster presentations.
+    * Leadership Engagement: Committee members or local chapter involvement.
     """)
     
-  st.info("**Benchmark Insight:** Your current calculator score is **" + f"{score:.1f}" + " / 100**. Review the sidebar recommendations to bridge gaps against your target program category.")
+  st.info("Benchmark Insight: Your current calculator score is **" + f"{score:.1f}" + " / 100**. Review the sidebar recommendations to bridge gaps against your target program category.")
 
 with tab5:
   st.header("CV Residency Match Evaluator")
@@ -855,12 +855,12 @@ with tab5:
       with c_col2:
         st.markdown("""
         **Areas for Optimization:**
-        * **Action Verbs:** Enhance bullet points under hospital internship roles with explicit pharmacokinetic or cost-avoidance metrics (e.g., *'Optimized vancomycin dosing protocols for 45+ patients'*).
-        * **Project Descriptions:** Ensure longitudinal projects clearly state your direct clinical interventions rather than listing passive duties.
-        * **Certificates:** Highlight BLS/ACLS certifications prominently near the header or license section.
+        * Action Verbs: Enhance bullet points under hospital internship roles with explicit pharmacokinetic or cost-avoidance metrics (e.g., *'Optimized vancomycin dosing protocols for 45+ patients'*).
+        * Project Descriptions: Ensure longitudinal projects clearly state your direct clinical interventions rather than listing passive duties.
+        * Certificates: Highlight BLS/ACLS certifications prominently near the header or license section.
         """)
       
-      st.info("**Pro-Tip:** Residency directors spend an average of 45-60 seconds scanning a CV during initial cutoffs. Ensure your top 3 clinical accomplishments are visible on page one.")
+      st.info("Pro-Tip: Residency directors spend an average of 45-60 seconds scanning a CV during initial cutoffs. Ensure your top 3 clinical accomplishments are visible on page one.")
 
 with tab6:
   st.header("Program Interview Hub & ASHP Question Mapping")
@@ -885,16 +885,16 @@ with tab6:
     
     st.markdown(f"""
     **1. Institutional Alignment Question (Tailored for {selected_prog_interview}):**
-    * *Question:* "Our health system at {prog_location} manages high-acuity inpatient services alongside robust outpatient care. Looking at our specific service lines, how do your prior acute-care rotations prepare you to handle complex pharmacokinetic consultations on day one here?"
-    * *ASHP Common Core Alignment:* Connects to the standard ASHP question category: *'Why are you interested in our specific program structure and geographical practice environment?'*
+    * Question: "Our health system at {prog_location} manages high-acuity inpatient services alongside robust outpatient care. Looking at our specific service lines, how do your prior acute-care rotations prepare you to handle complex pharmacokinetic consultations on day one here?"
+    * ASHP Common Core Alignment: Connects to the standard ASHP question category: *'Why are you interested in our specific program structure and geographical practice environment?'*
     
     **2. Clinical Scenario Assessment:**
-    * *Question:* "At {selected_prog_interview}, our residents frequently lead multidisciplinary rounds in specialized units. If a physician disagrees with your renal dose adjustment recommendation for an antimicrobial agent during active rounds, how do you manage the communication professionally while advocating for patient safety?"
-    * *ASHP Common Core Alignment:* Maps directly to ASHP behavioral and clinical conflict resolution competencies.
+    * Question: "At {selected_prog_interview}, our residents frequently lead multidisciplinary rounds in specialized units. If a physician disagrees with your renal dose adjustment recommendation for an antimicrobial agent during active rounds, how do you manage the communication professionally while advocating for patient safety?"
+    * ASHP Common Core Alignment: Maps directly to ASHP behavioral and clinical conflict resolution competencies.
     
     **3. Workload & Time Management:**
-    * *Question:* "Balancing staffing obligations, longitudinal research projects, and rotational disease-state presentations at {selected_prog_interview} requires strict prioritization. Can you share an instance where you managed competing academic and clinical deadlines under pressure?"
-    * *ASHP Common Core Alignment:* Aligns with standard resilience and organizational queries found in national residency interview guides.
+    * Question: "Balancing staffing obligations, longitudinal research projects, and rotational disease-state presentations at {selected_prog_interview} requires strict prioritization. Can you share an instance where you managed competing academic and clinical deadlines under pressure?"
+    * ASHP Common Core Alignment: Aligns with standard resilience and organizational queries found in national residency interview guides.
     """)
     
     st.markdown("---")
@@ -963,9 +963,9 @@ Sincerely,
     st.markdown("---")
     st.subheader("Step-by-Step Instructions & Prompts for Crafting a Winning LOI")
     st.markdown("""
-    1. **Page-Length Discipline:** Keep your Letter of Intent strictly to **one single page**. Selection committees review hundreds of applications; conciseness is valued.
-    2. **Paragraph 1 (The Hook & Introduction):** State clearly the program name, match code, and your overarching career vision. Connect your core motivation to their specific institutional setting.
-    3. **Paragraph 2 & 3 (The Core Evidence):** Do not merely repeat your CV. Provide **one or two powerful clinical anecdotes** (e.g., managing a complex pharmacokinetic or disease-state intervention during rotations) that prove your clinical readiness.
-    4. **Paragraph 4 (Why THIS Program?):** Mention specific program features found in their brochure or directory listing (e.g., specific staffing models, teaching certificates, or specialized rotation offerings). Generic letters that swap hospital names are immediately flagged.
-    5. **Paragraph 5 (Conclusion):** Reiterate your enthusiasm, thank the committee for their time, and close professionally.
+    1. Page-Length Discipline: Keep your Letter of Intent strictly to one single page. Selection committees review hundreds of applications; conciseness is valued.
+    2. Paragraph 1 (The Hook & Introduction): State clearly the program name, match code, and your overarching career vision. Connect your core motivation to their specific institutional setting.
+    3. Paragraph 2 & 3 (The Core Evidence): Do not merely repeat your CV. Provide one or two powerful clinical anecdotes (e.g., managing a complex pharmacokinetic or disease-state intervention during rotations) that prove your clinical readiness.
+    4. Paragraph 4 (Why THIS Program?): Mention specific program features found in their brochure or directory listing (e.g., specific staffing models, teaching certificates, or specialized rotation offerings). Generic letters that swap hospital names are immediately flagged.
+    5. Paragraph 5 (Conclusion): Reiterate your enthusiasm, thank the committee for their time, and close professionally.
     """)
