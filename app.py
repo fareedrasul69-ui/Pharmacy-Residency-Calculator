@@ -5,41 +5,41 @@ st.set_page_config(
     page_title="Residency Match & Tracker", page_icon="💊", layout="wide"
 )
 
-# --- MODERN POLISHED NEUTRAL & MINIMALISTIC CSS ---
+# --- MODERN POLISHED NEUTRAL & WARM NEUTRAL PALETTE CSS ---
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
     :root {
-        --background-color: #f8f9fa;
+        --background-color: #fcfbfa;
         --secondary-background: #ffffff;
-        --text-color: #1e293b;
-        --border-color: #e2e8f0;
-        --primary-color: #0d9488;
+        --text-color: #2c2420;
+        --border-color: #e6dfdb;
+        --primary-color: #bfa18f;
     }
 
     .stApp {
-        background-color: #f8f9fa !important;
-        color: #1e293b !important;
+        background-color: #fcfbfa !important;
+        color: #2c2420 !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
     [data-testid="stSidebar"] {
-        background-color: #ffffff !important;
-        border-right: 1px solid #e2e8f0 !important;
-        color: #1e293b !important;
+        background-color: #f7f4f0 !important;
+        border-right: 1px solid #e6dfdb !important;
+        color: #2c2420 !important;
         box-shadow: 2px 0 10px rgba(0,0,0,0.01);
     }
     
     [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] span {
-        color: #1e293b !important;
+        color: #2c2420 !important;
     }
     
     .stTextInput input, .stSelectbox select, .stSlider {
         background-color: #ffffff !important;
-        color: #1e293b !important;
-        border: 1px solid #cbd5e1 !important;
+        color: #2c2420 !important;
+        border: 1px solid #d9cec7 !important;
         border-radius: 10px !important;
         padding: 8px !important;
     }
@@ -48,16 +48,16 @@ st.markdown(
         background: #ffffff !important;
         padding: 20px;
         border-radius: 16px;
-        border: 1px solid #e2e8f0 !important;
+        border: 1px solid #e6dfdb !important;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
     }
     
     div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricValue"] {
-        color: #1e293b !important;
+        color: #2c2420 !important;
     }
     
     .stButton button {
-        background-color: #0d9488 !important;
+        background-color: #bfa18f !important;
         color: #ffffff !important;
         border: none;
         border-radius: 10px !important;
@@ -66,9 +66,9 @@ st.markdown(
         transition: all 0.2s ease-in-out;
     }
     .stButton button:hover {
-        background-color: #0f766e !important;
+        background-color: #ad8f7d !important;
         color: #ffffff !important;
-        box-shadow: 0 6px 15px rgba(13, 148, 136, 0.25);
+        box-shadow: 0 6px 15px rgba(191, 161, 143, 0.25);
         transform: translateY(-1px);
     }
     
@@ -78,31 +78,43 @@ st.markdown(
         padding-bottom: 10px;
     }
     .stTabs [data-baseweb="tab"] {
-        background-color: #ffffff !important;
+        background-color: #f7f4f0 !important;
         border-radius: 10px !important;
-        color: #64748b !important;
-        border: 1px solid #e2e8f0 !important;
+        color: #7a6e65 !important;
+        border: 1px solid #e6dfdb !important;
         padding: 12px 24px !important;
         font-weight: 600;
         box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .stTabs [aria-selected="true"] {
-        background-color: #0d9488 !important;
+        background-color: #bfa18f !important;
         color: #ffffff !important;
-        border: 1px solid #0d9488 !important;
-        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25) !important;
+        border: 1px solid #bfa18f !important;
+        box-shadow: 0 4px 12px rgba(191, 161, 143, 0.25) !important;
     }
     
     .stAlert {
-        background-color: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        color: #334155 !important;
+        background-color: #f7f4f0 !important;
+        border: 1px solid #e6dfdb !important;
+        color: #4a3f38 !important;
         border-radius: 12px !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.01);
     }
     
     p, span, label, h1, h2, h3, h4, h5, h6, li {
-        color: #1e293b;
+        color: #2c2420;
+    }
+
+    /* Custom styling for dialog / modal wrapper to match light cream aesthetic */
+    [data-testid="stModal"] {
+        background-color: rgba(44, 36, 32, 0.4) !important;
+    }
+    [data-testid="stModal"] > div {
+        background-color: #fffaf5 !important;
+        border: 1px solid #e6dfdb !important;
+        border-radius: 20px !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02) !important;
+        color: #2c2420 !important;
     }
     </style>
     """,
@@ -181,17 +193,17 @@ if "saved_list" not in st.session_state:
 if "show_instructions" not in st.session_state:
   st.session_state.show_instructions = True
 
-@st.dialog("💊 Welcome to the Residency Match & Tracker — User Guide")
+@st.dialog("Welcome to the Residency Match and Tracker — User Guide")
 def instructions_popup():
   st.markdown("""
-  ### Welcome, Future Pharmacy Resident! 
+  ### Welcome, Future Pharmacy Resident
   This platform is designed to serve as your comprehensive command center for navigating the ASHP residency match process. Before you begin exploring programs and evaluating your candidacy, please review how to use this tool effectively:
 
-  #### 1. ⚙️ Build Your Candidate Profile (Sidebar)
+  #### 1. Build Your Candidate Profile (Sidebar)
   * Input your **College of Pharmacy**, **PharmD GPA**, **Honor Society Memberships (Rho Chi / Phi Lambda Sigma)**, work experience, research background, leadership tier, and recommendation letter quality.
   * The system instantly calculates your **Match Competitiveness Score (out of 100)** and generates live, tailored recommendations to strengthen your application.
 
-  #### 2. 🔍 Explore Programs (Exploration Matrix Tabs)
+  #### 2. Explore Programs (Exploration Matrix Tabs)
   * **Program Query:** Search specific hospitals or health systems across the national database.
   * **State & Track Filter:** Filter programs by state, category, and sub-focus tracks (Ambulatory Care, Acute Care, Managed Care, etc.). Inspect detailed competitiveness breakdowns for any site.
   * **Interactive Map:** Visualize residency hub distributions across the US.
@@ -200,13 +212,13 @@ def instructions_popup():
   * **Program Interview Hub:** Review tailored ASHP common prompt alignments and practice scenario questions specific to your target program.
   * **Advanced LOI Generator:** Dynamically generate a customized, context-aware Letter of Intent draft based on your chosen program and clinical passion.
 
-  #### 3. 🔖 Track & Save
-  * Bookmark programs using the **"Save to Portfolio"** button in program inspect views to build your personal application target list in the sidebar.
+  #### 3. Track & Save
+  * Bookmark programs using the **Save to Portfolio** button in program inspect views to build your personal application target list in the sidebar.
 
   ---
   *Created by **Fareed Rasul**. Click below to close this guide and enter the platform.*
   """)
-  if st.button("🚀 Enter Platform & Start Tracking", use_container_width=True):
+  if st.button("Enter Platform and Start Tracking", use_container_width=True):
     st.session_state.show_instructions = False
     st.rerun()
 
@@ -221,7 +233,7 @@ st.caption(
 
 # --- DESKTOP EXPERIENCE NOTICE ---
 st.warning(
-    "💻 **Optimal Experience Notice:** For the best viewing experience and"
+    "**Optimal Experience Notice:** For the best viewing experience and"
     " easiest navigation through program metrics and data tables, please view"
     " this platform on a laptop or desktop computer."
 )
@@ -532,11 +544,11 @@ st.header("Exploration Matrix")
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "Program Query",
     "State & Track Filter",
-    "🗺️ Interactive Map",
-    "📊 Peer Cohort Analytics",
-    "📄 CV Match Evaluator",
-    "💡 Program Interview Hub",
-    "✍️ Advanced LOI Generator",
+    "Interactive Map",
+    "Peer Cohort Analytics",
+    "CV Match Evaluator",
+    "Program Interview Hub",
+    "Advanced LOI Generator",
 ])
 
 with tab1:
@@ -580,13 +592,13 @@ with tab1:
           
           if score >= required_score:
             match_def = "High probability of securing an interview invitation based on robust academic and professional alignment."
-            rec_action = "✅ **Recommendation:** Strongly Consider Applying. Your profile meets or exceeds target standards."
+            rec_action = "**Recommendation:** Strongly Consider Applying. Your profile meets or exceeds target standards."
           elif score >= (required_score - 15):
             match_def = "Competitive profile with minor gaps; requires strong letters of intent and networking to offset."
-            rec_action = "⚠️ **Recommendation:** Consider with Caution. Focus on tailoring your letter of intent specifically to this site."
+            rec_action = "**Recommendation:** Consider with Caution. Focus on tailoring your letter of intent specifically to this site."
           else:
             match_def = "Significant variance from historical averages; high barrier to entry without unique distinguishing attributes."
-            rec_action = "❌ **Recommendation:** Unfavorable Match. Treat as a high-risk reach or skip to prioritize better-aligned programs."
+            rec_action = "**Recommendation:** Unfavorable Match. Treat as a high-risk reach or skip to prioritize better-aligned programs."
           
           st.caption(f"**Likelihood Definition:** {match_def}")
           st.markdown(rec_action)
@@ -723,13 +735,13 @@ with tab2:
 
         if score >= req_score:
           match_def_2 = "High probability of interview extension; metrics satisfy or exceed historical cohort cutoffs."
-          rec_action_2 = "✅ **Recommendation:** Strongly Consider Applying."
+          rec_action_2 = "**Recommendation:** Strongly Consider Applying."
         elif score >= (req_score - 15):
           match_def_2 = "Competitive profile with potential areas for improvement; heavily relies on a compelling letter of intent."
-          rec_action_2 = "⚠️ **Recommendation:** Consider with Caution."
+          rec_action_2 = "**Recommendation:** Consider with Caution."
         else:
           match_def_2 = "Profile sits well below historical benchmarks; application carries a high risk of rejection."
-          rec_action_2 = "❌ **Recommendation:** Unfavorable Match / Skip."
+          rec_action_2 = "**Recommendation:** Unfavorable Match / Skip."
 
         st.caption(f"**Definition:** {match_def_2}")
         st.markdown(rec_action_2)
@@ -775,7 +787,7 @@ with tab2:
     st.info("No records match the current filter selection.")
 
 with tab3:
-  st.header("Interactive Geographic Residency Hubs")
+  st.header("Geographic Residency Hubs")
   st.caption("Explore residency distributions across the United States. Click or scan state nodes to filter programs.")
   
   map_state_filter = st.selectbox("Filter Map by State", ["All States"] + sorted(df_programs["State_Code"].dropna().unique().tolist()))
@@ -786,7 +798,7 @@ with tab3:
     map_data = df_programs
     
   if not map_data.empty:
-    st.map(map_data, latitude="lat", longitude="lon", size=30, color="#0d9488")
+    st.map(map_data, latitude="lat", longitude="lon", size=30, color="#bfa18f")
     st.write(f"Displaying **{len(map_data)}** program nodes on map canvas.")
   else:
     st.warning("No coordinates available for current map configuration.")
@@ -797,7 +809,7 @@ with tab4:
   
   col_p1, col_p2 = st.columns(2)
   with col_p1:
-    st.subheader("🏥 Academic Medical Centers (AMCs) / Large Hospitals")
+    st.subheader("Academic Medical Centers (AMCs) / Large Hospitals")
     st.markdown("""
     * **Average GPA:** 3.74 - 3.92
     * **Honor Societies:** Over 70% of matched applicants hold membership in Rho Chi (pharmaceutical honor society) or Phi Lambda Sigma (PLS leadership society).
@@ -806,7 +818,7 @@ with tab4:
     * **Leadership Engagement:** Multiple active student organization board positions.
     """)
   with col_p2:
-    st.subheader("🏪 Community Pharmacy & Managed Care Programs")
+    st.subheader("Community Pharmacy & Managed Care Programs")
     st.markdown("""
     * **Average GPA:** 3.42 - 3.70
     * **Honor Societies:** Highly valued as an indicator of academic discipline and professional commitment.
@@ -815,10 +827,10 @@ with tab4:
     * **Leadership Engagement:** Committee members or local chapter involvement.
     """)
     
-  st.info("💡 **Benchmark Insight:** Your current calculator score is **" + f"{score:.1f}" + " / 100**. Review the sidebar recommendations to bridge gaps against your target program category.")
+  st.info("**Benchmark Insight:** Your current calculator score is **" + f"{score:.1f}" + " / 100**. Review the sidebar recommendations to bridge gaps against your target program category.")
 
 with tab5:
-  st.header("📄 CV Residency Match Evaluator")
+  st.header("CV Residency Match Evaluator")
   st.caption("Upload your pharmacy student CV (PDF or TXT) to evaluate it against historical successful residency applicant benchmarks.")
   
   uploaded_cv = st.file_uploader("Upload CV Document", type=["pdf", "txt", "docx"])
@@ -829,7 +841,7 @@ with tab5:
     
     with st.spinner("Analyzing clinical rotation formatting, leadership blocks, and research footprint against historical matches..."):
       st.markdown("---")
-      st.subheader("📊 CV Evaluation & Gap Analysis Report")
+      st.subheader("CV Evaluation & Gap Analysis Report")
       
       c_col1, c_col2 = st.columns(2)
       with c_col1:
@@ -848,10 +860,10 @@ with tab5:
         * **Certificates:** Highlight BLS/ACLS certifications prominently near the header or license section.
         """)
       
-      st.info("💡 **Pro-Tip:** Residency directors spend an average of 45-60 seconds scanning a CV during initial cutoffs. Ensure your top 3 clinical accomplishments are visible on page one.")
+      st.info("**Pro-Tip:** Residency directors spend an average of 45-60 seconds scanning a CV during initial cutoffs. Ensure your top 3 clinical accomplishments are visible on page one.")
 
 with tab6:
-  st.header("💡 Program Interview Hub & ASHP Question Mapping")
+  st.header("Program Interview Hub & ASHP Question Mapping")
   st.select_slider("Select preparation readiness level", options=["Beginning", "Intermediate", "Advanced Mock Prep"])
   
   selected_prog_interview = st.selectbox(
@@ -889,7 +901,7 @@ with tab6:
     st.markdown("[Access Official ASHP Residency Interview Resources & Guidelines](https://www.ashp.org/professional-development/residency-information)")
 
 with tab7:
-  st.header("✍️ Advanced Letter of Intent (LOI) Builder & Guide")
+  st.header("Advanced Letter of Intent (LOI) Builder & Guide")
   st.caption("Select your exact target program to generate a highly personalized, context-aware Letter of Intent draft alongside expert formatting steps.")
   
   selected_loi_prog = st.selectbox(
@@ -949,7 +961,7 @@ Sincerely,
     )
     
     st.markdown("---")
-    st.subheader("📋 Step-by-Step Instructions & Prompts for Crafting a Winning LOI")
+    st.subheader("Step-by-Step Instructions & Prompts for Crafting a Winning LOI")
     st.markdown("""
     1. **Page-Length Discipline:** Keep your Letter of Intent strictly to **one single page**. Selection committees review hundreds of applications; conciseness is valued.
     2. **Paragraph 1 (The Hook & Introduction):** State clearly the program name, match code, and your overarching career vision. Connect your core motivation to their specific institutional setting.
