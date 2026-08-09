@@ -5,21 +5,34 @@ st.set_page_config(
     page_title="Residency Match & Tracker", page_icon="💊", layout="wide"
 )
 
-# --- MODERN NEUTRAL & MINIMALISTIC CSS ---
+# --- MODERN NEUTRAL & MINIMALISTIC CSS (FORCE LIGHT MODE COMPATIBILITY) ---
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
+    /* Force light mode variables across Streamlit elements to prevent dark mode contrast break */
+    :root {
+        --background-color: #f8f9fa;
+        --secondary-background: #ffffff;
+        --text-color: #212529;
+        --border-color: #e9ecef;
+    }
+
     .stApp {
-        background-color: #f8f9fa;
-        color: #212529;
+        background-color: #f8f9fa !important;
+        color: #212529 !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
     [data-testid="stSidebar"] {
-        background-color: #ffffff;
-        border-right: 1px solid #e9ecef;
+        background-color: #ffffff !important;
+        border-right: 1px solid #e9ecef !important;
+        color: #212529 !important;
+    }
+    
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] span {
+        color: #212529 !important;
     }
     
     .stTextInput input, .stSelectbox select, .stSlider {
@@ -30,24 +43,28 @@ st.markdown(
     }
     
     div[data-testid="stMetric"] {
-        background: #ffffff;
+        background: #ffffff !important;
         padding: 16px;
         border-radius: 12px;
-        border: 1px solid #e9ecef;
+        border: 1px solid #e9ecef !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     
+    div[data-testid="stMetric"] label, div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+        color: #212529 !important;
+    }
+    
     .stButton button {
-        background-color: #0d9488;
-        color: #ffffff;
+        background-color: #0d9488 !important;
+        color: #ffffff !important;
         border: none;
         border-radius: 8px;
         font-weight: 500;
         transition: all 0.2s ease;
     }
     .stButton button:hover {
-        background-color: #0f766e;
-        color: #ffffff;
+        background-color: #0f766e !important;
+        color: #ffffff !important;
         box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
     }
     
@@ -56,10 +73,10 @@ st.markdown(
         background-color: transparent;
     }
     .stTabs [data-baseweb="tab"] {
-        background-color: #ffffff;
+        background-color: #ffffff !important;
         border-radius: 8px;
-        color: #6c757d;
-        border: 1px solid #e9ecef;
+        color: #6c757d !important;
+        border: 1px solid #e9ecef !important;
         padding: 10px 20px;
         font-weight: 500;
     }
@@ -75,6 +92,11 @@ st.markdown(
         border: 1px solid #e9ecef !important;
         color: #495057 !important;
         border-radius: 10px;
+    }
+    
+    /* Ensure markdown text remains dark and readable regardless of system scheme */
+    p, span, label, h1, h2, h3, h4, h5, h6, li {
+        color: #212529;
     }
     </style>
     """,
@@ -356,7 +378,7 @@ lor_strength = st.sidebar.selectbox(
 score = 0.0
 score += (gpa / 4.00) * 35
 
-# Honor societies bonus weighting
+# Honor societies bonus weighting with Rho Chi / PLS factor
 if honor_society == "Officer / Leadership Role in Rho Chi or PLS":
   score += 10
 elif honor_society == "Member of Both (Rho Chi AND PLS)":
@@ -422,7 +444,7 @@ if gpa < 3.5:
   )
 if honor_society == "None" and gpa >= 3.5:
   recommendations.append(
-      "• **Honor Society Eligibility:** With a strong GPA, check your academic standing for Rho Chi eligibility to add formal academic prestige to your application."
+      "• **Honor Society Eligibility:** With a strong GPA, check your academic standing for Rho Chi or PLS eligibility to add formal academic prestige to your application."
   )
 if work_experience in ["None / Minimal", "Community / Retail Experience (> 1 Year)"]:
   recommendations.append(
