@@ -241,10 +241,12 @@ st.warning(
 # --- PROFESSIONAL DISCLAIMER ---
 st.info(
     "System Notice & Credits: This platform was created by **Fareed"
-    " Rasul**. It functions as an architectural guide for residency pathways."
-    " Competitiveness analytics are modeled using portal telemetry and"
-    " metrics, and do not constitute absolute admission guarantees."
-    " Cross-reference with official institutional criteria.\n\n"
+    " Rasul** as an architectural guide for residency pathways. "
+    "\n\n"
+    "**Score Calculation Methodology:** Your candidate competitiveness score (out of 100) is modeled dynamically based on weighted inputs including PharmD GPA (up to 35 pts), honor society memberships like Rho Chi or PLS (up to 10 pts), clinical or retail work background (up to 20 pts), active research or poster presentations (up to 15 pts), leadership tiers (up to 15 pts), and recommendation letter quality (up to 15 pts)."
+    "\n\n"
+    "⚠️ **Important Reference Disclaimer:** This tool is strictly provided for general reference and self-evaluation purposes only. It does not constitute an absolute admission or match guarantee. **All information, program requirements, deadlines, and criteria must be double-checked and verified via official accounts, official ASHP directories, and primary program websites.**"
+    "\n\n"
     "Connect with Fareed:\n"
     "- TikTok: [@fareedrasul](https://www.tiktok.com/@fareedrasul)\n"
     "- Instagram: [@fareed_rasul](https://www.instagram.com/fareed_rasul)\n"
