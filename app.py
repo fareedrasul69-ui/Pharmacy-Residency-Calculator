@@ -189,8 +189,9 @@ df_programs = load_data()
 if "saved_list" not in st.session_state:
   st.session_state.saved_list = []
 
-# --- POPUP INSTRUCTIONS MODAL ---
-if "show_instructions" not in st.session_state:
+# --- POPUP INSTRUCTIONS MODAL (Initialized once) ---
+if "instructions_initialized" not in st.session_state:
+  st.session_state.instructions_initialized = True
   st.session_state.show_instructions = True
 
 @st.dialog("Welcome to the Residency Match and Tracker — User Guide")
@@ -222,7 +223,7 @@ def instructions_popup():
     st.session_state.show_instructions = False
     st.rerun()
 
-if st.session_state.show_instructions:
+if st.session_state.get("show_instructions", False):
   instructions_popup()
 
 
