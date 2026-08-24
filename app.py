@@ -82,7 +82,7 @@ st.markdown(
         border-radius: 10px !important;
         color: #8C7A6B !important;
         border: 1px solid #E3D5C9 !important;
-        padding: 12px 24px !important;
+        padding: 12px 18px !important;
         font-weight: 600;
         box-shadow: 0 1px 3px rgba(92, 78, 67, 0.02);
     }
@@ -193,8 +193,6 @@ st.warning(
 st.info(
     "System Notice & Credits: This platform was created by **Fareed"
     " Rasul** as an architectural guide for residency pathways. "
-    "\n\n"
-    "**Score Calculation Methodology:** Your candidate competitiveness score (out of 100) is modeled dynamically based on weighted inputs including PharmD GPA (up to 35 pts), honor society memberships like Rho Chi or PLS (up to 10 pts), clinical or retail work background (up to 20 pts), active research or poster presentations (up to 15 pts), leadership tiers (up to 15 pts), and recommendation letter quality (up to 15 pts)."
     "\n\n"
     "⚠️ **Important Reference Disclaimer:** This tool is strictly provided for general reference and self-evaluation purposes only. It does not constitute an absolute admission or match guarantee. **All information, program requirements, deadlines, and criteria must be double-checked and verified via official accounts, official ASHP directories, and primary program websites.**"
     "\n\n"
@@ -339,6 +337,36 @@ pharmacy_schools = [
     "Yeshiva University",
 ]
 
+# High NAPLEX Pass Rate 2025 Schools (NABP 2025 first-time/all-time pass rate >= 86% or top performers)
+high_pass_rate_schools = [
+    "University of Michigan College of Pharmacy (Ann Arbor)",
+    "University of Puerto Rico Medical Sciences Campus School of Pharmacy (San Juan)",
+    "Husson University College of Health and Pharmacy School of Pharmacy (Bangor, Maine)",
+    "Idaho State University L.S. Skaggs College of Pharmacy (Meridian)",
+    "East Tennessee State University Bill Gatton College of Pharmacy (Johnson City)",
+    "University of Oklahoma Health Sciences Center College of Pharmacy (Oklahoma City)",
+    "University of the Incarnate Word Feik School of Pharmacy (San Antonio)",
+    "University of California San Diego Skaggs School of Pharmacy & Pharmaceutical Sciences",
+    "University of South Carolina College of Pharmacy (Columbia)",
+    "University at Buffalo (N.Y.) School of Pharmacy & Pharmaceutical Sciences",
+    "Ohio Northern University Raabe College of Pharmacy (Ada)",
+    "Union University College of Pharmacy (Jackson, Tenn.)",
+    "University of Cincinnati James L. Winkle College of Pharmacy",
+    "University of Findlay (Ohio) College of Pharmacy",
+    "Purdue University",
+    "University of Utah",
+    "University of Minnesota",
+    "University of Washington",
+    "Auburn University",
+    "Duquesne University",
+    "Ferris State University",
+    "University of Kentucky",
+    "Samford University",
+    "Creighton University",
+    "Drake University",
+    "Rutgers, The State University of New Jersey",
+]
+
 # --- SIDEBAR NAVIGATION & USER PROFILE INPUTS ---
 st.sidebar.title("Navigation & Profile")
 sidebar_mode = st.sidebar.radio("Go To", ["Platform Tools", "📖 User Guide & Instructions"])
@@ -350,17 +378,18 @@ if sidebar_mode == "📖 User Guide & Instructions":
   This platform is designed to serve as your comprehensive command center for navigating the ASHP residency match process. Here is how to use this tool effectively:
 
   #### 1. Build Your Candidate Profile (Sidebar)
-  * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships (Rho Chi / Phi Lambda Sigma), work experience, research background, leadership tier, and recommendation letter quality.
+  * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships (Rho Chi / Phi Lambda Sigma), Work Experience, Community Service, Research Background, Leadership Tier, and Recommendation Letter Quality.
   * The system instantly calculates your Match Competitiveness Score (out of 100) and generates live, tailored recommendations to strengthen your application.
 
   #### 2. Explore Programs (Exploration Matrix Tabs)
   * Program Query: Search specific hospitals or health systems across the national database.
-  * State & Track Filter: Filter programs by state, category, and sub-focus tracks (Ambulatory Care, Acute Care, Managed Care, etc.). Inspect detailed competitiveness breakdowns for any site.
+  * State & Track Filter: Filter programs by state, category, and sub-focus tracks.
   * Interactive Map: Visualize residency hub distributions across the US.
-  * Peer Cohort Analytics: Compare your profile metrics against historical benchmarks for Academic Medical Centers vs. Community/Managed Care programs.
-  * CV Match Evaluator: Upload your CV document to receive a structured telemetry gap analysis.
-  * Program Interview Hub: Review tailored ASHP common prompt alignments and practice scenario questions specific to your target program.
-  * Advanced LOI Generator: Dynamically generate a customized, context-aware Letter of Intent draft based on your chosen program and clinical passion.
+  * Peer Cohort Analytics: Compare your profile metrics against historical benchmarks.
+  * CV Match Evaluator: Upload your CV document to receive a structured gap analysis.
+  * Program Interview Hub: Review tailored ASHP common prompt alignments.
+  * Advanced LOI Generator: Dynamically generate a customized Letter of Intent draft.
+  * LOR Strategy & Guide: Review strategies on how to secure strong recommendations.
 
   #### 3. Track & Save
   * Bookmark programs using the Save to Portfolio button in program inspect views to build your personal application target list in the sidebar.
@@ -386,12 +415,21 @@ else:
   )
 
   work_experience = st.sidebar.selectbox(
-      "Pharmacy Experience",
+      "Work Experience (Hospital or Community)",
       [
           "None / Minimal",
-          "Community / Retail Experience (> 1 Year)",
-          "Hospital / Health-System Intern (1+ Years)",
-          "Multiple Clinical / Specialized Internships",
+          "0 - 6 Months",
+          "6 - 12 Months",
+          "1 Year Plus Experience",
+      ],
+  )
+
+  community_service = st.sidebar.selectbox(
+      "Community Service During Pharmacy School",
+      [
+          "Minimal / None",
+          "Moderate Involvement (Local Events / Health Fairs)",
+          "Extensive Involvement (Regular Volunteering / Board Lead)",
       ],
   )
 
@@ -406,17 +444,26 @@ else:
   lor_strength = st.sidebar.selectbox(
       "Recommendation Quality (LOR)",
       [
-          "Standard (Generic check-box evaluations with general praise)",
-          "Strong (Detailed clinical insights from preceptors with positive performance remarks)",
-          "Exceptional (Top-tier narrative letters highlighting clinical autonomy, advanced problem solving, and leadership)",
+          "Highly recommend",
+          "Recommend",
+          "Recommend with reservations",
+          "Do not recommend",
       ],
   )
 
-  # --- SCORING ALGORITHM (105 Max adjusted) ---
+  # --- SCORING ALGORITHM (Exact 100 Max Cap, No Mention of Weights) ---
   score = 0.0
-  score += (gpa / 4.00) * 35
+  
+  # GPA component
+  score += (gpa / 4.00) * 30
 
-  # Honor societies bonus weighting with Rho Chi / PLS factor
+  # School pass rate / tier bonus
+  if user_pharm_school in high_pass_rate_schools:
+    score += 8
+  else:
+    score += 4
+
+  # Honor societies bonus
   if honor_society == "Officer / Leadership Role in Rho Chi or PLS":
     score += 10
   elif honor_society == "Member of Both (Rho Chi AND PLS)":
@@ -424,31 +471,45 @@ else:
   elif honor_society == "Member of One (Rho Chi OR PLS)":
     score += 5
 
-  if work_experience == "Multiple Clinical / Specialized Internships":
-    score += 20
-  elif work_experience == "Hospital / Health-System Intern (1+ Years)":
-    score += 15
-  elif work_experience == "Community / Retail Experience (> 1 Year)":
+  # Work experience component (Hospital or Community rated equally)
+  if work_experience == "1 Year Plus Experience":
+    score += 18
+  elif work_experience == "6 - 12 Months":
     score += 12
+  elif work_experience == "0 - 6 Months":
+    score += 8
   else:
-    score += 5
+    score += 2
 
+  # Community service component
+  if community_service == "Extensive Involvement (Regular Volunteering / Board Lead)":
+    score += 8
+  elif community_service == "Moderate Involvement (Local Events / Health Fairs)":
+    score += 5
+  else:
+    score += 2
+
+  # Research component
   if research == "Yes":
-    score += 15
+    score += 12
 
+  # Leadership component
   if leadership == "Executive / Multi-Officer":
-    score += 15
+    score += 10
   elif leadership == "Local Officer":
-    score += 10
+    score += 7
   elif leadership == "Local Committee / Member":
-    score += 5
+    score += 4
 
-  if "Exceptional" in lor_strength:
-    score += 15
-  elif "Strong" in lor_strength:
-    score += 10
+  # LOR component
+  if lor_strength == "Highly recommend":
+    score += 12
+  elif lor_strength == "Recommend":
+    score += 7
+  elif lor_strength == "Recommend with reservations":
+    score += 2
   else:
-    score += 5
+    score += 0
 
   score = min(score, 100.0)
 
@@ -484,21 +545,25 @@ else:
     recommendations.append(
         "• Honor Society Eligibility: With a strong GPA, check your academic standing for Rho Chi or PLS eligibility to add formal academic prestige to your application."
     )
-  if work_experience in ["None / Minimal", "Community / Retail Experience (> 1 Year)"]:
+  if work_experience in ["None / Minimal", "0 - 6 Months"]:
     recommendations.append(
-        "• Clinical Experience: Transitioning into a hospital intern role or securing an acute-care APPE rotation significantly boosts match probability."
+        "• Work Experience: Accumulating longitudinal pharmacy practice experience (hospital or community) strengthens clinical readiness metrics."
+    )
+  if community_service == "Minimal / None":
+    recommendations.append(
+        "• Community Service: Engaging in pharmacy-led health fairs or community outreach events demonstrates civic leadership and patient advocacy."
     )
   if research == "No":
     recommendations.append(
-        "• Research / Presentations: Submitting a case report or obtaining a poster presentation adds a quick +15 points to your profile."
+        "• Research / Presentations: Submitting a case report or obtaining a poster presentation adds significant value to your profile."
     )
   if leadership in ["None", "Local Committee / Member"]:
     recommendations.append(
-        "• Leadership Growth: Stepping into an officer role within professional organizations (like ASHP/SSHP) strengthens your executive profile."
+        "• Leadership Growth: Stepping into an officer role within professional organizations strengthens your executive profile."
     )
-  if "Standard" in lor_strength or "Strong" in lor_strength:
+  if lor_strength in ["Recommend", "Recommend with reservations", "Do not recommend"]:
     recommendations.append(
-        "• Recommendation Quality: Cultivate relationships with clinical preceptors who can speak directly to your direct-patient care skills for an 'Exceptional' LOR."
+        "• Recommendation Quality: Cultivate relationships with clinical preceptors early during APPE rotations to secure a 'Highly recommend' evaluation."
     )
 
   if recommendations:
@@ -525,7 +590,7 @@ else:
 if sidebar_mode == "Platform Tools":
   st.header("Exploration Matrix")
 
-  tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+  tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
       "Program Query",
       "State & Track Filter",
       "Interactive Map",
@@ -533,6 +598,7 @@ if sidebar_mode == "Platform Tools":
       "CV Match Evaluator",
       "Program Interview Hub",
       "Advanced LOI Generator",
+      "LOR Strategy & Guide",
   ])
 
   with tab1:
@@ -796,22 +862,22 @@ if sidebar_mode == "Platform Tools":
       st.subheader("Academic Medical Centers (AMCs) / Large Hospitals")
       st.markdown("""
       * Average GPA: 3.74 - 3.92
-      * Honor Societies: Over 70% of matched applicants hold membership in Rho Chi (pharmaceutical honor society) or Phi Lambda Sigma (PLS leadership society).
-      * Hospital Internship Duration: 1.5 to 3 Years (Acute Care Focus)
+      * Honor Societies: Over 70% of matched applicants hold membership in Rho Chi or Phi Lambda Sigma.
+      * Work Experience: 1+ Years (Hospital or Community Practice)
       * Research / Posters: 85% had at least 1 published poster or case report.
-      * Leadership Engagement: Multiple active student organization board positions.
+      * Leadership & Service: Multiple active student organization and community service roles.
       """)
     with col_p2:
       st.subheader("Community Pharmacy & Managed Care Programs")
       st.markdown("""
       * Average GPA: 3.42 - 3.70
-      * Honor Societies: Highly valued as an indicator of academic discipline and professional commitment.
-      * Work Experience: Retail or community longitudinal projects (> 1 Year)
+      * Honor Societies: Highly valued as an indicator of academic discipline.
+      * Work Experience: Longitudinal practice background
       * Research / Posters: 40% had formal poster presentations.
-      * Leadership Engagement: Committee members or local chapter involvement.
+      * Community & Leadership: Regular volunteer engagement and local chapter involvement.
       """)
       
-    st.info("Benchmark Insight: Your current calculator score is **" + f"{score:.1f}" + " / 100**. Review the sidebar recommendations to bridge gaps against your target program category.")
+    st.info("Benchmark Insight: Your current calculator score is **" + f"{score:.1f}" + " / 100**. Review sidebar recommendations to bridge gaps against your target program category.")
 
   with tab5:
     st.header("CV Residency Match Evaluator")
@@ -839,12 +905,12 @@ if sidebar_mode == "Platform Tools":
         with c_col2:
           st.markdown("""
           **Areas for Optimization:**
-          * Action Verbs: Enhance bullet points under hospital internship roles with explicit pharmacokinetic or cost-avoidance metrics (e.g., *'Optimized vancomycin dosing protocols for 45+ patients'*).
-          * Project Descriptions: Ensure longitudinal projects clearly state your direct clinical interventions rather than listing passive duties.
-          * Certificates: Highlight BLS/ACLS certifications prominently near the header or license section.
+          * Action Verbs: Enhance bullet points under work experience roles with explicit pharmacokinetic or clinical interventions.
+          * Project Descriptions: Ensure longitudinal projects clearly state your direct patient care responsibilities.
+          * Certifications: Highlight BLS/ACLS certifications prominently near the header.
           """)
         
-        st.info("Pro-Tip: Residency directors spend an average of 45-60 seconds scanning a CV during initial cutoffs. Ensure your top 3 clinical accomplishments are visible on page one.")
+        st.info("Pro-Tip: Residency directors spend an average of 45-60 seconds scanning a CV during initial cutoffs. Ensure your top clinical accomplishments are visible on page one.")
 
   with tab6:
     st.header("Program Interview Hub & ASHP Question Mapping")
@@ -949,7 +1015,39 @@ Sincerely,
       st.markdown("""
       1. Page-Length Discipline: Keep your Letter of Intent strictly to one single page. Selection committees review hundreds of applications; conciseness is valued.
       2. Paragraph 1 (The Hook & Introduction): State clearly the program name, match code, and your overarching career vision. Connect your core motivation to their specific institutional setting.
-      3. Paragraph 2 & 3 (The Core Evidence): Do not merely repeat your CV. Provide one or two powerful clinical anecdotes (e.g., managing a complex pharmacokinetic or disease-state intervention during rotations) that prove your clinical readiness.
-      4. Paragraph 4 (Why THIS Program?): Mention specific program features found in their brochure or directory listing (e.g., specific staffing models, teaching certificates, or specialized rotation offerings). Generic letters that swap hospital names are immediately flagged.
+      3. Paragraph 2 & 3 (The Core Evidence): Do not merely repeat your CV. Provide one or two powerful clinical anecdotes that prove your clinical readiness.
+      4. Paragraph 4 (Why THIS Program?): Mention specific program features found in their brochure or directory listing.
       5. Paragraph 5 (Conclusion): Reiterate your enthusiasm, thank the committee for their time, and close professionally.
       """)
+
+  with tab8:
+    st.header("Letter of Recommendation (LOR) Strategy & Preceptor Guide")
+    st.markdown("""
+    ### Setting Expectations: Aiming for 'Highly Recommend'
+    When applying for postgraduate residency programs, securing a rating of **"Highly recommend"** from your evaluators on PhORCAS is a vital benchmark. Residency selection committees use LORs to evaluate your clinical competence, reliability, emotional intelligence, and autonomy under pressure.
+
+    ### Encouraging Excellence During APPE Rotations
+    Your Advanced Pharmacy Practice Experience (APPE) rotations are your audition for residency letters of recommendation. To secure glowing evaluations:
+    * **Demonstrate Proactive Learning:** Do not wait to be told to read up on a patient's disease state. Review charts early, anticipate clinical questions, and offer evidence-based recommendations during pre-rounding.
+    * **Accept Constructive Feedback Gracefully:** Show preceptors that you can take critique, adjust your clinical approach immediately, and learn from complex patient cases.
+    * **Show Reliability & Accountability:** Arrive early, complete assigned tasks meticulously, and ensure patient handoffs or clinical follow-ups are seamless.
+
+    ### How to Make a Positive Impact on Rotation
+    * **Go Beyond Dispensing:** Focus heavily on pharmacokinetics, adverse drug reaction monitoring, renal dose adjustments, and pharmacokinetic calculations.
+    * **Engage the Multidisciplinary Team:** Communicate clearly and professionally with physicians, nurses, and clinical specialists. Preceptors notice when healthcare providers actively seek out your clinical input.
+    * **Lead Education:** Provide concise, well-researched inservices or topic discussions to the pharmacy team without needing prompting.
+
+    ### How to Ask for a Letter of Recommendation
+    When approaching a preceptor to request a recommendation where you aim for a **"Highly recommend"** rating:
+    1. **Timing is Critical:** Ask at least 4 to 6 weeks before application deadlines. Avoid asking during the busiest weeks of their staffing schedule if possible.
+    2. **Schedule a Dedicated Conversation:** Ask via a brief meeting or professional email if they feel they know your clinical work well enough to write a *strong, enthusiastic letter* supporting your residency goals. 
+    3. **Provide Supporting Materials:** Provide your updated CV, a draft of your Letter of Intent, your current academic transcript, and a summary sheet highlighting key patient cases or projects you worked on together during their rotation.
+    4. **Clear Communication:** Politely specify that you are targeting competitive residencies and are hoping they can support you with a **"Highly recommend"** evaluation on PhORCAS.
+
+    ---
+    ### Primary Literature & Reference Resources
+    * **ASHP Official Residency Resources:** [ASHP Residency Information & Candidate Guide](https://www.ashp.org)
+    * **Reference Literature:** 
+      * *Reference Writer Guidelines for Residency Programs:* Guidelines outlining how preceptors evaluate applicants across standardized PhORCAS domains (autonomy, problem-solving, professionalism, and communication).
+      * *Evaluating Applicant Competitiveness:* Studies published in the *American Journal of Health-System Pharmacy (AJHP)* detailing the critical weight recommendation letters hold in granting residency interviews.
+    """)
