@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="Residency Match & Tracker", page_icon="💊", layout="wide"
+    page_title="Pharmacy Residency Match Analyzer", page_icon="💊", layout="wide"
 )
 
 # --- MODERN POLISHED NEUTRAL & WARM NEUTRAL PALETTE CSS ---
@@ -177,7 +177,7 @@ df_programs = load_data()
 if "saved_list" not in st.session_state:
   st.session_state.saved_list = []
 
-st.title("Residency Match & Tracker")
+st.title("Pharmacy Residency Match Analyzer")
 st.caption(
     "Clinical Program Match & Strategic Evaluation Engine (ASHP Network)"
 )
@@ -337,7 +337,6 @@ pharmacy_schools = [
     "Yeshiva University",
 ]
 
-# High NAPLEX Pass Rate 2025 Schools (NABP 2025 first-time/all-time pass rate >= 86% or top performers)
 high_pass_rate_schools = [
     "University of Michigan College of Pharmacy (Ann Arbor)",
     "University of Puerto Rico Medical Sciences Campus School of Pharmacy (San Juan)",
@@ -378,7 +377,7 @@ if sidebar_mode == "📖 User Guide & Instructions":
   This platform is designed to serve as your comprehensive command center for navigating the ASHP residency match process. Here is how to use this tool effectively:
 
   #### 1. Build Your Candidate Profile (Sidebar)
-  * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships (Rho Chi / Phi Lambda Sigma), Leadership Experience, Community Service, Research Background, Recommendation Letter Quality, and Work Experience.
+  * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships, Leadership Experience, Community Service, Research Background, Poster Presentation Level, Recommendation Letter Quality, and Work Experience.
   * The system instantly calculates your Match Competitiveness Score (out of 100) and generates live, tailored recommendations to strengthen your application.
 
   #### 2. Explore Programs (Exploration Matrix Tabs)
@@ -429,7 +428,12 @@ else:
   )
 
   research = st.sidebar.selectbox(
-      "Active Research / Posters", ["No", "Yes"]
+      "Active Research Background", ["No", "Yes"]
+  )
+
+  poster_level = st.sidebar.selectbox(
+      "Highest Poster Presentation Level",
+      ["None", "Local", "State", "Regional", "National"],
   )
 
   lor_strength = st.sidebar.selectbox(
@@ -452,19 +456,16 @@ else:
       ],
   )
 
-  # --- SCORING ALGORITHM (Exact 100 Max Cap, No Mention of Weights) ---
+  # --- SCORING ALGORITHM ---
   score = 0.0
   
-  # GPA component
   score += (gpa / 4.00) * 30
 
-  # School pass rate / tier bonus (86%+ pass rate gives more points)
   if user_pharm_school in high_pass_rate_schools:
     score += 8
   else:
     score += 4
 
-  # Honor societies bonus
   if honor_society == "Officer / Leadership Role in Rho Chi or PLS":
     score += 10
   elif honor_society == "Member of Both (Rho Chi AND PLS)":
@@ -472,7 +473,6 @@ else:
   elif honor_society == "Member of One (Rho Chi OR PLS)":
     score += 5
 
-  # Leadership component
   if leadership == "Executive / Multi-Officer":
     score += 10
   elif leadership == "Local Officer":
@@ -480,7 +480,6 @@ else:
   elif leadership == "Local Committee / Member":
     score += 4
 
-  # Community service component
   if community_service == "Extensive Involvement (Regular Volunteering / Board Lead)":
     score += 8
   elif community_service == "Moderate Involvement (Local Events / Health Fairs)":
@@ -488,11 +487,18 @@ else:
   else:
     score += 2
 
-  # Research component
   if research == "Yes":
-    score += 12
+    score += 7
 
-  # LOR component
+  if poster_level == "National":
+    score += 6
+  elif poster_level == "Regional":
+    score += 5
+  elif poster_level == "State":
+    score += 4
+  elif poster_level == "Local":
+    score += 2
+
   if lor_strength == "Highly recommend":
     score += 12
   elif lor_strength == "Recommend":
@@ -502,7 +508,6 @@ else:
   else:
     score += 0
 
-  # Work experience component (Hospital or Community rated equally)
   if work_experience == "1 Year Plus Experience":
     score += 18
   elif work_experience == "6 - 12 Months":
@@ -556,7 +561,11 @@ else:
     )
   if research == "No":
     recommendations.append(
-        "• Research / Presentations: Submitting a case report or obtaining a poster presentation adds significant value to your profile."
+        "• Research Background: Participating in clinical research or case reports adds significant value to your profile."
+    )
+  if poster_level == "None":
+    recommendations.append(
+        "• Poster Presentations: Submitting a poster to a state or national convention highlights scientific communication skills."
     )
   if lor_strength in ["Recommend", "Recommend with reservations", "Do not recommend"]:
     recommendations.append(
@@ -865,7 +874,7 @@ if sidebar_mode == "Platform Tools":
       * Average GPA: 3.74 - 3.92
       * Honor Societies: Over 70% of matched applicants hold membership in Rho Chi or Phi Lambda Sigma.
       * Work Experience: 1+ Years (Hospital or Community Practice)
-      * Research / Posters: 85% had at least 1 published poster or case report.
+      * Research & Posters: 85% had at least 1 published poster or case report.
       * Leadership & Service: Multiple active student organization and community service roles.
       """)
     with col_p2:
@@ -874,7 +883,7 @@ if sidebar_mode == "Platform Tools":
       * Average GPA: 3.42 - 3.70
       * Honor Societies: Highly valued as an indicator of academic discipline.
       * Work Experience: Longitudinal practice background
-      * Research / Posters: 40% had formal poster presentations.
+      * Research & Posters: 40% had formal poster presentations.
       * Community & Leadership: Regular volunteer engagement and local chapter involvement.
       """)
       
