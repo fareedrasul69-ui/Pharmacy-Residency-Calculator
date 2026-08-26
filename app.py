@@ -378,7 +378,7 @@ if sidebar_mode == "📖 User Guide & Instructions":
   This platform is designed to serve as your comprehensive command center for navigating the ASHP residency match process. Here is how to use this tool effectively:
 
   #### 1. Build Your Candidate Profile (Sidebar)
-  * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships (Rho Chi / Phi Lambda Sigma), Work Experience, Community Service, Research Background, Leadership Tier, and Recommendation Letter Quality.
+  * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships (Rho Chi / Phi Lambda Sigma), Leadership Experience, Community Service, Research Background, Recommendation Letter Quality, and Work Experience.
   * The system instantly calculates your Match Competitiveness Score (out of 100) and generates live, tailored recommendations to strengthen your application.
 
   #### 2. Explore Programs (Exploration Matrix Tabs)
@@ -414,14 +414,9 @@ else:
       ],
   )
 
-  work_experience = st.sidebar.selectbox(
-      "Work Experience (Hospital or Community)",
-      [
-          "None / Minimal",
-          "0 - 6 Months",
-          "6 - 12 Months",
-          "1 Year Plus Experience",
-      ],
+  leadership = st.sidebar.selectbox(
+      "Leadership Experience",
+      ["None", "Local Committee / Member", "Local Officer", "Executive / Multi-Officer"],
   )
 
   community_service = st.sidebar.selectbox(
@@ -436,10 +431,6 @@ else:
   research = st.sidebar.selectbox(
       "Active Research / Posters", ["No", "Yes"]
   )
-  leadership = st.sidebar.selectbox(
-      "Leadership Tier",
-      ["None", "Local Committee / Member", "Local Officer", "Executive / Multi-Officer"],
-  )
 
   lor_strength = st.sidebar.selectbox(
       "Recommendation Quality (LOR)",
@@ -451,13 +442,23 @@ else:
       ],
   )
 
+  work_experience = st.sidebar.selectbox(
+      "Work Experience (Hospital or Community)",
+      [
+          "None / Minimal",
+          "0 - 6 Months",
+          "6 - 12 Months",
+          "1 Year Plus Experience",
+      ],
+  )
+
   # --- SCORING ALGORITHM (Exact 100 Max Cap, No Mention of Weights) ---
   score = 0.0
   
   # GPA component
   score += (gpa / 4.00) * 30
 
-  # School pass rate / tier bonus
+  # School pass rate / tier bonus (86%+ pass rate gives more points)
   if user_pharm_school in high_pass_rate_schools:
     score += 8
   else:
@@ -471,15 +472,13 @@ else:
   elif honor_society == "Member of One (Rho Chi OR PLS)":
     score += 5
 
-  # Work experience component (Hospital or Community rated equally)
-  if work_experience == "1 Year Plus Experience":
-    score += 18
-  elif work_experience == "6 - 12 Months":
-    score += 12
-  elif work_experience == "0 - 6 Months":
-    score += 8
-  else:
-    score += 2
+  # Leadership component
+  if leadership == "Executive / Multi-Officer":
+    score += 10
+  elif leadership == "Local Officer":
+    score += 7
+  elif leadership == "Local Committee / Member":
+    score += 4
 
   # Community service component
   if community_service == "Extensive Involvement (Regular Volunteering / Board Lead)":
@@ -493,14 +492,6 @@ else:
   if research == "Yes":
     score += 12
 
-  # Leadership component
-  if leadership == "Executive / Multi-Officer":
-    score += 10
-  elif leadership == "Local Officer":
-    score += 7
-  elif leadership == "Local Committee / Member":
-    score += 4
-
   # LOR component
   if lor_strength == "Highly recommend":
     score += 12
@@ -510,6 +501,16 @@ else:
     score += 2
   else:
     score += 0
+
+  # Work experience component (Hospital or Community rated equally)
+  if work_experience == "1 Year Plus Experience":
+    score += 18
+  elif work_experience == "6 - 12 Months":
+    score += 12
+  elif work_experience == "0 - 6 Months":
+    score += 8
+  else:
+    score += 2
 
   score = min(score, 100.0)
 
@@ -545,9 +546,9 @@ else:
     recommendations.append(
         "• Honor Society Eligibility: With a strong GPA, check your academic standing for Rho Chi or PLS eligibility to add formal academic prestige to your application."
     )
-  if work_experience in ["None / Minimal", "0 - 6 Months"]:
+  if leadership in ["None", "Local Committee / Member"]:
     recommendations.append(
-        "• Work Experience: Accumulating longitudinal pharmacy practice experience (hospital or community) strengthens clinical readiness metrics."
+        "• Leadership Growth: Stepping into an officer role within professional organizations strengthens your executive profile."
     )
   if community_service == "Minimal / None":
     recommendations.append(
@@ -557,13 +558,13 @@ else:
     recommendations.append(
         "• Research / Presentations: Submitting a case report or obtaining a poster presentation adds significant value to your profile."
     )
-  if leadership in ["None", "Local Committee / Member"]:
-    recommendations.append(
-        "• Leadership Growth: Stepping into an officer role within professional organizations strengthens your executive profile."
-    )
   if lor_strength in ["Recommend", "Recommend with reservations", "Do not recommend"]:
     recommendations.append(
         "• Recommendation Quality: Cultivate relationships with clinical preceptors early during APPE rotations to secure a 'Highly recommend' evaluation."
+    )
+  if work_experience in ["None / Minimal", "0 - 6 Months"]:
+    recommendations.append(
+        "• Work Experience: Accumulating longitudinal pharmacy practice experience (hospital or community) strengthens clinical readiness metrics."
     )
 
   if recommendations:
