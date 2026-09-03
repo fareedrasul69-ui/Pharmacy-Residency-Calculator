@@ -5,7 +5,7 @@ st.set_page_config(
     page_title="Pharmacy Residency Match Analyzer", page_icon="💊", layout="wide"
 )
 
-# --- MODERN POLISHED NEUTRAL & WARM NEUTRAL PALETTE CSS WITH FULL TEXT WRAPPING ---
+# --- MODERN POLISHED NEUTRAL PALETTE CSS WITH FULL TEXT WRAPPING & DROPDOWN FIXES ---
 st.markdown(
     """
     <style>
@@ -42,12 +42,27 @@ st.markdown(
         overflow-wrap: break-word !important;
     }
     
-    .stTextInput input, .stSelectbox select, .stSlider {
+    /* Allow full text wrapping inside selectbox dropdown options and inputs */
+    .stTextInput input, .stSlider {
         background-color: #FFFFFF !important;
         color: #5C4E43 !important;
         border: 1px solid #D9C8B9 !important;
         border-radius: 10px !important;
         padding: 8px !important;
+    }
+    
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #FFFFFF !important;
+        color: #5C4E43 !important;
+        border: 1px solid #D9C8B9 !important;
+        border-radius: 10px !important;
+    }
+
+    /* Force options inside dropdown menus to wrap text properly */
+    div[data-baseweb="popover"] div, div[data-baseweb="menu"] div, span[data-baseweb="tag"] {
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
     }
     
     div[data-testid="stMetric"] {
@@ -117,7 +132,6 @@ st.markdown(
         overflow-wrap: break-word !important;
     }
 
-    /* Custom highlight boxes and universal text wrapping utility */
     .wrapped-box {
         background-color: #FFFFFF;
         border: 2px solid #C8AD93;
@@ -144,7 +158,6 @@ st.markdown(
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
     }
-    /* Force table cells and dataframe wrappers to wrap long texts cleanly */
     .stDataFrame, .stDataFrame div, .stDataFrame table, .stDataFrame th, .stDataFrame td {
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
