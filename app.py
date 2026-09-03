@@ -5,7 +5,7 @@ st.set_page_config(
     page_title="Pharmacy Residency Match Analyzer", page_icon="💊", layout="wide"
 )
 
-# --- MODERN POLISHED NEUTRAL & WARM NEUTRAL PALETTE CSS ---
+# --- MODERN POLISHED NEUTRAL & WARM NEUTRAL PALETTE CSS WITH FULL TEXT WRAPPING ---
 st.markdown(
     """
     <style>
@@ -23,6 +23,8 @@ st.markdown(
         background-color: #FAF6F0 !important;
         color: #5C4E43 !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
     
     [data-testid="stSidebar"] {
@@ -30,10 +32,14 @@ st.markdown(
         border-right: 1px solid #E3D5C9 !important;
         color: #5C4E43 !important;
         box-shadow: 2px 0 10px rgba(0,0,0,0.01);
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
     
     [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] span, [data-testid="stSidebar"] div {
         color: #5C4E43 !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
     
     .stTextInput input, .stSelectbox select, .stSlider {
@@ -64,6 +70,8 @@ st.markdown(
         font-weight: 600 !important;
         padding: 10px 20px !important;
         transition: all 0.2s ease-in-out;
+        white-space: normal !important;
+        word-break: break-word !important;
     }
     .stButton button:hover {
         background-color: #B59A80 !important;
@@ -99,13 +107,17 @@ st.markdown(
         color: #5C4E43 !important;
         border-radius: 12px !important;
         box-shadow: 0 2px 4px rgba(92, 78, 67, 0.01);
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
     
-    p, span, label, h1, h2, h3, h4, h5, h6, li {
+    p, span, label, h1, h2, h3, h4, h5, h6, li, div {
         color: #5C4E43;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
 
-    /* Custom highlight boxes and text wrapping utility */
+    /* Custom highlight boxes and universal text wrapping utility */
     .wrapped-box {
         background-color: #FFFFFF;
         border: 2px solid #C8AD93;
@@ -115,8 +127,9 @@ st.markdown(
         color: #5C4E43;
         margin-bottom: 15px;
         box-shadow: 0 2px 6px rgba(92, 78, 67, 0.04);
-        word-wrap: break-word;
-        overflow-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        white-space: normal !important;
     }
     .highlight-fit {
         background-color: #F4EDE4;
@@ -128,9 +141,14 @@ st.markdown(
         text-align: center;
         font-size: 1.1rem;
         margin-bottom: 15px;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
-    .stDataFrame {
-        word-wrap: break-word;
+    /* Force table cells and dataframe wrappers to wrap long texts cleanly */
+    .stDataFrame, .stDataFrame div, .stDataFrame table, .stDataFrame th, .stDataFrame td {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        white-space: normal !important;
     }
     </style>
     """,
@@ -668,20 +686,17 @@ if sidebar_mode == "Platform Tools":
                     intensity_label = "High Intensity (Academic / Large Health System)" if is_reach_prog else "Standard Intensity (Community / General)"
                     required_score = 80 if is_reach_prog else 65
 
-                    # Determine fit status strictly as Reach, Target, Safety
                     if score >= required_score:
                         fit_status = "Safety" if score >= (required_score + 10) else "Target"
                     else:
                         fit_status = "Reach"
 
-                    # Highlighted Fit Status display (Updated from Fit Result)
                     st.markdown(f"""
                         <div class="highlight-fit">
                             FIT STATUS: {fit_status.upper()}
                         </div>
                     """, unsafe_allow_html=True)
 
-                    # Layout Side-by-Side: Candidate Info on Left, School Info & Tier on Right
                     col_candidate, col_school = st.columns(2)
 
                     with col_candidate:
@@ -693,12 +708,10 @@ if sidebar_mode == "Platform Tools":
                         st.write(f"**Location:** {row.get('Location', 'N/A')}")
                         st.write(f"**Category:** {row.get('Category', 'N/A')}")
                         st.write(f"**Stipend:** {row.get('Estimated Stipend', 'N/A')}")
-                        # Tier moved to the right hand side along with school information (intensity only)
                         st.info(f"**Intensity Tier:** {intensity_label}")
 
                     st.markdown("---")
 
-                    # Fit status, likelihood definition, and recommendation in bold and in a highlighted box with text wrapping
                     if fit_status == "Safety":
                         match_def = "High probability of interview extension and successful match alignment given strong profile metrics relative to program demands."
                         rec_action = "**Recommendation:** Strongly consider applying; exceptional strategic fit for your background."
@@ -792,7 +805,6 @@ if sidebar_mode == "Platform Tools":
         st.markdown(f"### Records Found: **{len(state_df)}** in **{selected_state}**")
 
         if not state_df.empty:
-            # Map Fit Status into Exploration Matrix for universal visibility
             display_df = state_df.copy()
             def calc_fit(r):
                 b = r.get("Total Beds", 0)
