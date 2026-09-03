@@ -674,10 +674,10 @@ if sidebar_mode == "Platform Tools":
                     else:
                         fit_status = "Reach"
 
-                    # Highlighted Fit Result display (Replaced old tier element)
+                    # Highlighted Fit Status display (Updated from Fit Result)
                     st.markdown(f"""
                         <div class="highlight-fit">
-                            FIT RESULT: {fit_status.upper()}
+                            FIT STATUS: {fit_status.upper()}
                         </div>
                     """, unsafe_allow_html=True)
 
@@ -687,7 +687,6 @@ if sidebar_mode == "Platform Tools":
                     with col_candidate:
                         st.markdown("#### Candidate Assessment")
                         st.write(f"**Your Match Score:** {score:.1f} / 100")
-                        st.write(f"**Target Threshold:** {required_score} pts")
 
                     with col_school:
                         st.markdown("#### School Information & Tier")
@@ -851,7 +850,7 @@ if sidebar_mode == "Platform Tools":
 
                 st.markdown(f"""
                     <div class="highlight-fit">
-                        FIT RESULT: {fit_status_2.upper()}
+                        FIT STATUS: {fit_status_2.upper()}
                     </div>
                 """, unsafe_allow_html=True)
 
