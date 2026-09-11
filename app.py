@@ -419,20 +419,21 @@ pharmacy_schools = [
 ]
 
 high_pass_rate_schools = [
-    "University of Michigan College of Pharmacy (Ann Arbor)",
-    "University of Puerto Rico Medical Sciences Campus School of Pharmacy (San Juan)",
-    "Husson University College of Health and Pharmacy School of Pharmacy (Bangor, Maine)",
-    "Idaho State University L.S. Skaggs College of Pharmacy (Meridian)",
-    "East Tennessee State University Bill Gatton College of Pharmacy (Johnson City)",
-    "University of Oklahoma Health Sciences Center College of Pharmacy (Oklahoma City)",
-    "University of the Incarnate Word Feik School of Pharmacy (San Antonio)",
-    "University of California San Diego Skaggs School of Pharmacy & Pharmaceutical Sciences",
-    "University of South Carolina College of Pharmacy (Columbia)",
-    "University at Buffalo (N.Y.) School of Pharmacy & Pharmaceutical Sciences",
-    "Ohio Northern University Raabe College of Pharmacy (Ada)",
-    "Union University College of Pharmacy (Jackson, Tenn.)",
-    "University of Cincinnati James L. Winkle College of Pharmacy",
-    "University of Findlay (Ohio) College of Pharmacy",
+    "University of Florida",
+    "University of Michigan",
+    "University of Puerto Rico",
+    "Husson University",
+    "Idaho State University",
+    "East Tennessee State University",
+    "University of Oklahoma",
+    "University of the Incarnate Word",
+    "University of California, San Diego",
+    "University of South Carolina",
+    "University of Buffalo",
+    "Ohio Northern University",
+    "Union University",
+    "University of Cincinnati",
+    "University of Findlay",
     "Purdue University",
     "University of Utah",
     "University of Minnesota",
@@ -459,7 +460,7 @@ if sidebar_mode == "📖 User Guide & Instructions":
 
     #### 1. Build Your Candidate Profile (Sidebar)
     * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships, Leadership Experience, Community Service, Research Background, Poster Presentation Level, Recommendation Letter Quality, and Work Experience.
-    * **Empirically Validated RPD Scoring:** The scoring engine is weighted directly using survey means from active Residency Program Directors ($n=36$).
+    * **Empirically Validated RPD Scoring:** The scoring engine is weighted directly using survey means from active Residency Program Directors ($n=36$)[cite: 1].
 
     #### 2. Explore Programs (Exploration Matrix Tabs)
     * Program Query: Search specific hospitals or health systems across the national database.
@@ -537,8 +538,8 @@ else:
         ],
     )
 
-    # --- EMPIRICALLY VALIDATED RPD LIKERT SCALE SCORING ALGORITHM ($n=36$) ---
-    # Total Mean sum = 33.45. Normalized proportionally to a 100-point maximum scale.
+    # --- EMPIRICALLY VALIDATED RPD LIKERT SCALE SCORING ALGORITHM ($n=36$)[cite: 1] ---
+    # Total Mean sum = 33.45. Normalized proportionally to a 100-point maximum scale.[cite: 1]
     score = 0.0
 
     # 1. Quality of Letter of Recommendations (Mean: 4.61 -> ~13.78 pts max)[cite: 1]
@@ -601,7 +602,10 @@ else:
         score += 2.0
 
     # 8. Pharmacy School Attended (Mean: 2.97 -> ~8.88 pts max)[cite: 1]
-    if user_pharm_school in high_pass_rate_schools:
+    is_high_tier_school = any(
+        s.lower() in user_pharm_school.lower() for s in high_pass_rate_schools
+    )
+    if is_high_tier_school:
         score += 8.88
     else:
         score += 4.5
