@@ -158,6 +158,28 @@ st.markdown(
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
     }
+    
+    /* Bolder and brighter status callout box for sidebar score */
+    .rpd-score-box {
+        background: linear-gradient(135deg, #4A3B32 0%, #2D231C 100%) !important;
+        border: 2px solid #D4B294 !important;
+        padding: 16px !important;
+        border-radius: 14px !important;
+        text-align: center !important;
+        box-shadow: 0 6px 16px rgba(45, 35, 28, 0.25) !important;
+        margin-bottom: 12px !important;
+    }
+    .rpd-score-box h3, .rpd-score-box p, .rpd-score-box span {
+        color: #FFF8F0 !important;
+        margin: 0 !important;
+    }
+    .rpd-score-val {
+        font-size: 1.8rem !important;
+        font-weight: 800 !important;
+        color: #F3E0D0 !important;
+        letter-spacing: -0.5px;
+    }
+
     .stDataFrame, .stDataFrame div, .stDataFrame table, .stDataFrame th, .stDataFrame td {
         word-wrap: break-word !important;
         overflow-wrap: break-word !important;
@@ -437,7 +459,7 @@ if sidebar_mode == "📖 User Guide & Instructions":
 
     #### 1. Build Your Candidate Profile (Sidebar)
     * Input your College of Pharmacy, PharmD GPA, Honor Society Memberships, Leadership Experience, Community Service, Research Background, Poster Presentation Level, Recommendation Letter Quality, and Work Experience.
-    * The system instantly calculates your Match Competitiveness Score (out of 100) and generates live, tailored recommendations to strengthen your application.
+    * **Empirically Validated RPD Scoring:** The scoring engine is weighted directly using survey means from active Residency Program Directors ($n=36$).
 
     #### 2. Explore Programs (Exploration Matrix Tabs)
     * Program Query: Search specific hospitals or health systems across the national database.
@@ -463,7 +485,7 @@ else:
     gpa = st.sidebar.slider("PharmD GPA", 2.00, 4.00, 3.50, 0.01)
 
     honor_society = st.sidebar.selectbox(
-        "Honor Societies (Rho Chi / Phi Lambda Sigma - PLS)",
+        "Participation in Honor Societies (PLS/Rho Chi)",
         [
             "None",
             "Member of One (Rho Chi OR PLS)",
@@ -487,16 +509,16 @@ else:
     )
 
     research = st.sidebar.selectbox(
-        "Active Research Background", ["No", "Yes"]
+        "Research Participation", ["No", "Yes"]
     )
 
     poster_level = st.sidebar.selectbox(
-        "Highest Poster Presentation Level",
+        "Poster Presentations",
         ["None", "Local", "State", "Regional", "National"],
     )
 
     lor_strength = st.sidebar.selectbox(
-        "Recommendation Quality (LOR)",
+        "Quality of Letter of Recommendations",
         [
             "Highly recommend",
             "Recommend",
@@ -506,7 +528,7 @@ else:
     )
 
     work_experience = st.sidebar.selectbox(
-        "Work Experience (Hospital or Community)",
+        "Work Experience",
         [
             "None / Minimal",
             "0 - 6 Months",
@@ -515,79 +537,104 @@ else:
         ],
     )
 
-    # --- SCORING ALGORITHM ---
+    # --- EMPIRICALLY VALIDATED RPD LIKERT SCALE SCORING ALGORITHM ($n=36$) ---
+    # Total Mean sum = 33.45. Normalized proportionally to a 100-point maximum scale.
     score = 0.0
-    
-    score += (gpa / 4.00) * 30
 
-    if user_pharm_school in high_pass_rate_schools:
-        score += 8
-    else:
-        score += 4
-
-    if honor_society == "Officer / Leadership Role in Rho Chi or PLS":
-        score += 10
-    elif honor_society == "Member of Both (Rho Chi AND PLS)":
-        score += 8
-    elif honor_society == "Member of One (Rho Chi OR PLS)":
-        score += 5
-
-    if leadership == "Executive / Multi-Officer":
-        score += 10
-    elif leadership == "Local Officer":
-        score += 7
-    elif leadership == "Local Committee / Member":
-        score += 4
-
-    if community_service == "Extensive Involvement (Regular Volunteering / Board Lead)":
-        score += 8
-    elif community_service == "Moderate Involvement (Local Events / Health Fairs)":
-        score += 5
-    else:
-        score += 2
-
-    if research == "Yes":
-        score += 7
-
-    if poster_level == "National":
-        score += 6
-    elif poster_level == "Regional":
-        score += 5
-    elif poster_level == "State":
-        score += 4
-    elif poster_level == "Local":
-        score += 2
-
+    # 1. Quality of Letter of Recommendations (Mean: 4.61 -> ~13.78 pts max)[cite: 1]
     if lor_strength == "Highly recommend":
-        score += 12
+        score += 13.78
     elif lor_strength == "Recommend":
-        score += 7
+        score += 9.0
     elif lor_strength == "Recommend with reservations":
-        score += 2
+        score += 4.0
     else:
-        score += 0
+        score += 0.0
 
+    # 2. Work Experience (Mean: 4.25 -> ~12.71 pts max)[cite: 1]
     if work_experience == "1 Year Plus Experience":
-        score += 18
+        score += 12.71
     elif work_experience == "6 - 12 Months":
-        score += 12
+        score += 9.5
     elif work_experience == "0 - 6 Months":
-        score += 8
+        score += 6.0
     else:
-        score += 2
+        score += 2.0
+
+    # 3. Leadership Experience (Mean: 4.17 -> ~12.47 pts max)[cite: 1]
+    if leadership == "Executive / Multi-Officer":
+        score += 12.47
+    elif leadership == "Local Officer":
+        score += 8.5
+    elif leadership == "Local Committee / Member":
+        score += 5.0
+    else:
+        score += 2.0
+
+    # 4. Research Participation (Mean: 3.83 -> ~11.45 pts max)[cite: 1]
+    if research == "Yes":
+        score += 11.45
+    else:
+        score += 2.0
+
+    # 5. Poster Presentations (Mean: 3.72 -> ~11.12 pts max)[cite: 1]
+    if poster_level == "National":
+        score += 11.12
+    elif poster_level == "Regional":
+        score += 8.5
+    elif poster_level == "State":
+        score += 6.0
+    elif poster_level == "Local":
+        score += 3.5
+    else:
+        score += 0.0
+
+    # 6. GPA (Mean: 3.64 -> ~10.88 pts max)[cite: 1]
+    score += (gpa / 4.00) * 10.88
+
+    # 7. Community Service During Pharmacy School (Mean: 3.33 -> ~9.96 pts max)[cite: 1]
+    if community_service == "Extensive Involvement (Regular Volunteering / Board Lead)":
+        score += 9.96
+    elif community_service == "Moderate Involvement (Local Events / Health Fairs)":
+        score += 6.5
+    else:
+        score += 2.0
+
+    # 8. Pharmacy School Attended (Mean: 2.97 -> ~8.88 pts max)[cite: 1]
+    if user_pharm_school in high_pass_rate_schools:
+        score += 8.88
+    else:
+        score += 4.5
+
+    # 9. Participation in Honor Societies (PLS/Rho Chi) (Mean: 2.94 -> ~8.79 pts max)[cite: 1]
+    if honor_society == "Officer / Leadership Role in Rho Chi or PLS":
+        score += 8.79
+    elif honor_society == "Member of Both (Rho Chi AND PLS)":
+        score += 7.0
+    elif honor_society == "Member of One (Rho Chi OR PLS)":
+        score += 4.5
+    else:
+        score += 1.0
 
     score = min(score, 100.0)
 
-    st.sidebar.markdown("---")
-    st.sidebar.subheader(f"Calculated Score: {score:.1f} / 100")
-    st.sidebar.caption(f"Inst: {user_pharm_school}")
-
     if score >= 80:
-        st.sidebar.success("Status: Highly Competitive")
+        status_text = "Status: Highly Competitive"
     elif score >= 65:
-        st.sidebar.info("Status: Competitive Standard")
+        status_text = "Status: Competitive Standard"
     else:
-        st.sidebar.warning("Status: Developing Profile")
+        status_text = "Status: Developing Profile"
+
+    st.sidebar.markdown("---")
+    # Render bolder, brighter custom callout box for calculated score
+    st.sidebar.markdown(f"""
+        <div class="rpd-score-box">
+            <p style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">RPD-Validated Score</p>
+            <div class="rpd-score-val">{score:.1f} <span style="font-size: 1rem; font-weight: 500;">/ 100</span></div>
+            <p style="font-size: 0.95rem; font-weight: 700; margin-top: 6px;">{status_text}</p>
+        </div>
+    """, unsafe_allow_html=True)
+    st.sidebar.caption(f"Institution: {user_pharm_school}")
 
     st.sidebar.markdown("---")
     st.sidebar.subheader("Live Profile Recommendations")
